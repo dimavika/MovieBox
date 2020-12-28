@@ -13,6 +13,7 @@ class NewMovieViewController: UIViewController {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var genreTextField: UITextField!
+    var videoURL: URL?
     let databaseService = DatabaseService.shared
     
     
@@ -27,11 +28,20 @@ class NewMovieViewController: UIViewController {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
+        imagePickerController.mediaTypes = ["public.image", "public.movie"]
         present(imagePickerController, animated: true, completion: nil)
     }
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!)
+        guard let image = movieImageView.image else { return }
+        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, image: image, videoURL: videoURL!) { (result) in
+            switch result {
+            case .success(let dbRef):
+                print(dbRef)
+            case .failure(let error):
+                print(error)
+            }
+        }
         self.navigationController?.popViewController(animated: true)
     }
     /*
@@ -50,7 +60,9 @@ extension NewMovieViewController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        movieImageView.image = image
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage { movieImageView.image = image
+        } else if let url = info[.mediaURL] as? URL {
+            videoURL = url
+                } else { return }
     }
 }

@@ -19,11 +19,13 @@
 		E4244378252F87AE00033508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4244376252F87AE00033508 /* LaunchScreen.storyboard */; };
 		E4244385252F8AF200033508 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244384252F8AF200033508 /* SignUpViewController.swift */; };
 		E4244389252F8B9000033508 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244388252F8B9000033508 /* SignInViewController.swift */; };
+		E4296E82258D1A32002BA912 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4296E81258D1A32002BA912 /* Movie.swift */; };
 		E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A815F2559775E00476E1B /* MovieTableViewCell.swift */; };
 		E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A817F2559913500476E1B /* NewMovieViewController.swift */; };
 		E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C11552539EE3D006CE5CC /* LoginViewController.swift */; };
 		E44B11B3257C3AF90037F497 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B11B2257C3AF90037F497 /* DatabaseService.swift */; };
 		E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E594C2540C779006BA108 /* UserProfileViewController.swift */; };
+		E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2B2B2259672540097714B /* MovieViewController.swift */; };
 		E4D0C4F6253DAFBF00B81799 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D0C4F5253DAFBF00B81799 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -43,11 +45,13 @@
 		E4244379252F87AE00033508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4244384252F8AF200033508 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E4244388252F8B9000033508 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		E4296E81258D1A32002BA912 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		E43A815F2559775E00476E1B /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		E43A817F2559913500476E1B /* NewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMovieViewController.swift; sourceTree = "<group>"; };
 		E43C11552539EE3D006CE5CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E44B11B2257C3AF90037F497 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		E44E594C2540C779006BA108 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E4A2B2B2259672540097714B /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		E4D0C4F5253DAFBF00B81799 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FEF514BDDF7D64DF57ECF33F /* Pods-MovieBox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieBox.release.xcconfig"; path = "Target Support Files/Pods-MovieBox/Pods-MovieBox.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +128,7 @@
 				E44E594C2540C779006BA108 /* UserProfileViewController.swift */,
 				E41132622550A39D0052ED1E /* MoviesTableViewController.swift */,
 				E43A817F2559913500476E1B /* NewMovieViewController.swift */,
+				E4A2B2B2259672540097714B /* MovieViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -141,10 +146,19 @@
 		E4244382252F89D100033508 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E4296E80258D1A15002BA912 /* movie */,
 				E44B11B1257C39EA0037F497 /* Database */,
 				E44E59552540D454006BA108 /* Auth */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E4296E80258D1A15002BA912 /* movie */ = {
+			isa = PBXGroup;
+			children = (
+				E4296E81258D1A32002BA912 /* Movie.swift */,
+			);
+			path = movie;
 			sourceTree = "<group>";
 		};
 		E44B11B1257C39EA0037F497 /* Database */ = {
@@ -297,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4296E82258D1A32002BA912 /* Movie.swift in Sources */,
 				E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */,
 				E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */,
 				E4244370252F87AB00033508 /* MainViewController.swift in Sources */,
@@ -307,6 +322,7 @@
 				E4244389252F8B9000033508 /* SignInViewController.swift in Sources */,
 				E4076EF3254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift in Sources */,
 				E44B11B3257C3AF90037F497 /* DatabaseService.swift in Sources */,
+				E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */,
 				E41132632550A39D0052ED1E /* MoviesTableViewController.swift in Sources */,
 				E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */,
 				E424436E252F87AB00033508 /* SceneDelegate.swift in Sources */,
