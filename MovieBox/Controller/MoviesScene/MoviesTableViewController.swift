@@ -9,7 +9,8 @@ import UIKit
 
 class MoviesTableViewController: UITableViewController {
     
-    let databaseService = DatabaseService.shared
+    let moviesDatabaseService = MovieDatabaseService.shared
+    let reviewsDatabaseService = ReviewDatabaseService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +23,7 @@ class MoviesTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        databaseService.updateAllMovies()
+        moviesDatabaseService.updateAllMovies()
         self.tableView.reloadData()
     }
     
@@ -35,14 +36,22 @@ class MoviesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return databaseService.allMovies.count
+        return moviesDatabaseService.allMovies.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedMovie = databaseService.allMovies[indexPath.row]
+        let selectedMovie = moviesDatabaseService.allMovies[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
             if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
                 viewController.movie = selectedMovie
+                reviewsDatabaseService.getAllReviews(forMovieId: selectedMovie.id) { (result) in
+                    switch result {
+                    case .success(let reviews):
+                        viewController.reviews = reviews
+                    case .failure(let error):
+                        print("Can't get reviews cause: \(error)")
+                    }
+                }
                 viewController.movieImage = cell.movieImageView.image
                 navigationController?.pushViewController(viewController, animated: true)
             }
@@ -51,13 +60,13 @@ class MoviesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-        let movie = databaseService.allMovies[indexPath.row]
+        let movie = moviesDatabaseService.allMovies[indexPath.row]
         
         cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
 
         cell.imageActivityIndicator.startAnimating()
-        databaseService.downloadImage(forURL: movie.imageUrl) { result in
+        moviesDatabaseService.downloadImage(forURL: movie.imageUrl) { result in
             switch result {
             case .success(let image):
                 cell.movieImageView.image = image
@@ -85,8 +94,8 @@ class MoviesTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let movieToDelete = databaseService.allMovies[indexPath.row]
-            databaseService.deleteMovie(id: movieToDelete.id, num: indexPath.row)
+            let movieToDelete = moviesDatabaseService.allMovies[indexPath.row]
+            moviesDatabaseService.deleteMovie(id: movieToDelete.id, num: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }

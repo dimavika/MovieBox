@@ -1,18 +1,17 @@
 //
-//  DatabaseService.swift
+//  MovieDatabaseService.swift
 //  MovieBox
 //
 //  Created by Димас on 06.12.2020.
 //
 
 import Foundation
-import FirebaseDatabase
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 
-class DatabaseService {
-    static let shared = DatabaseService()
+class MovieDatabaseService {
+    static let shared = MovieDatabaseService()
     let storageRef = Storage.storage().reference()
     let firestore = Firestore.firestore()
     var allMovies: [Movie] = []

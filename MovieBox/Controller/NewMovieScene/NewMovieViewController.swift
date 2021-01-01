@@ -14,7 +14,7 @@ class NewMovieViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var genreTextField: UITextField!
     var videoURL: URL?
-    let databaseService = DatabaseService.shared
+    let databaseService = MovieDatabaseService.shared
     
     
     
@@ -36,8 +36,8 @@ class NewMovieViewController: UIViewController {
         guard let image = movieImageView.image else { return }
         databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, image: image, videoURL: videoURL!) { (result) in
             switch result {
-            case .success(let dbRef):
-                print(dbRef)
+            case .success(let successMessage):
+                print(successMessage)
             case .failure(let error):
                 print(error)
             }
