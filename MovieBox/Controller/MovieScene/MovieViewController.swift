@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 import FirebaseAuth
+import Cosmos
 
 class MovieViewController: UIViewController {
 
@@ -15,6 +16,7 @@ class MovieViewController: UIViewController {
     var movie: Movie?
     var reviews = [Review]()
     let reviewsDatabaseService = ReviewDatabaseService.shared
+    let ratingDatabaseService = RatingDatabaseService.shared
     
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var genreLabel: UILabel!
@@ -22,6 +24,7 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var reviewsTableView: UITableView!
     @IBOutlet weak var newReviewTextField: UITextField!
     @IBOutlet weak var postReviewButton: UIButton!
+    @IBOutlet weak var ratingView: CosmosView!
     
     
     @IBAction func postReviewButtonPressed(_ sender: UIButton) {
@@ -65,6 +68,30 @@ class MovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let username = Auth.auth().currentUser!.displayName!
+        ratingDatabaseService.getUserRatingForCurrentMovie(movieId: movie!.id, username: username) { (result) in
+            switch result {
+            case .success(let rating):
+                if (!rating.isEmpty) {
+                    self.ratingView.rating = Double(rating[0].value)
+                } else {
+                    print("User did not rate this movie")
+                }
+            case .failure(let error):
+                print("Can't ger user rate cause: \(error)")
+            }
+        }
+        
+        ratingView.didTouchCosmos = { rating in
+            self.ratingDatabaseService.saveRating(movieId: self.movie!.id, value: Int(rating), username: username) { (result) in
+                switch result {
+                case .success(let successMessage):
+                    print(successMessage)
+                case .failure(let error):
+                    print("Can't save user rate cause: \(error)")
+                }
+            }
+        }
         reviewsTableView.delegate = self
         reviewsTableView.dataSource = self
         reviewsTableView.estimatedRowHeight = 100
@@ -96,7 +123,6 @@ class MovieViewController: UIViewController {
 
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Count: \(reviews.count)")
         return reviews.count
     }
     

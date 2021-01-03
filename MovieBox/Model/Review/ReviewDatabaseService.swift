@@ -35,7 +35,8 @@ class ReviewDatabaseService{
     }
     
     func getAllReviews(forMovieId: String, completion: @escaping (Result<[Review], Error>) -> Void) {
-        firestore.collection("reviews").whereField("movie_id", isEqualTo: forMovieId).getDocuments { (querySnapshot, error) in
+        firestore.collection("reviews").whereField("movie_id", isEqualTo: forMovieId)
+            .getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -54,12 +55,9 @@ class ReviewDatabaseService{
     }
     
     public func updateAllReviews(movieId: String) {
-        print("Movie_id: \(movieId)")
         getAllReviews(forMovieId: movieId) { result in
             switch result {
             case .success(let reviews):
-                print("success")
-                print(reviews.count)
                 self.allReviews = reviews
             case .failure(let error):
                 print("Something went wrong cause: \(error)")

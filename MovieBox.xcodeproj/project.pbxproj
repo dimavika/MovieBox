@@ -28,6 +28,8 @@
 		E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E594C2540C779006BA108 /* UserProfileViewController.swift */; };
 		E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */; };
 		E4714DF1259D2D6200991A78 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4714DF0259D2D6200991A78 /* Review.swift */; };
+		E4904F7325A1343800BF053E /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7225A1343800BF053E /* Rating.swift */; };
+		E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7525A134E900BF053E /* RatingDatabaseService.swift */; };
 		E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2B2B2259672540097714B /* MovieViewController.swift */; };
 		E4D0C4F6253DAFBF00B81799 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4D0C4F5253DAFBF00B81799 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -57,6 +59,8 @@
 		E44E594C2540C779006BA108 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDatabaseService.swift; sourceTree = "<group>"; };
 		E4714DF0259D2D6200991A78 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		E4904F7225A1343800BF053E /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
+		E4904F7525A134E900BF053E /* RatingDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingDatabaseService.swift; sourceTree = "<group>"; };
 		E4A2B2B2259672540097714B /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		E4D0C4F5253DAFBF00B81799 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FEF514BDDF7D64DF57ECF33F /* Pods-MovieBox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieBox.release.xcconfig"; path = "Target Support Files/Pods-MovieBox/Pods-MovieBox.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 		E4244382252F89D100033508 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E4904F7125A1342700BF053E /* Rating */,
 				E4714DEB259D2B0E00991A78 /* Review */,
 				E4296E80258D1A15002BA912 /* Movie */,
 				E44E59552540D454006BA108 /* Auth */,
@@ -233,6 +238,15 @@
 				E4714DF0259D2D6200991A78 /* Review.swift */,
 			);
 			path = Review;
+			sourceTree = "<group>";
+		};
+		E4904F7125A1342700BF053E /* Rating */ = {
+			isa = PBXGroup;
+			children = (
+				E4904F7225A1343800BF053E /* Rating.swift */,
+				E4904F7525A134E900BF053E /* RatingDatabaseService.swift */,
+			);
+			path = Rating;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,11 +393,13 @@
 				E4244385252F8AF200033508 /* SignUpViewController.swift in Sources */,
 				E4244389252F8B9000033508 /* SignInViewController.swift in Sources */,
 				E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */,
+				E4904F7325A1343800BF053E /* Rating.swift in Sources */,
 				E4714DF1259D2D6200991A78 /* Review.swift in Sources */,
 				E4076EF3254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift in Sources */,
 				E44B11B3257C3AF90037F497 /* MovieDatabaseService.swift in Sources */,
 				E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */,
 				E41132632550A39D0052ED1E /* MoviesTableViewController.swift in Sources */,
+				E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */,
 				E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */,
 				E424436E252F87AB00033508 /* SceneDelegate.swift in Sources */,
 			);

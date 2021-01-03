@@ -501,18 +501,23 @@
                                     <constraint firstAttribute="height" constant="128" id="fsO-lN-QWS"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeX-IH-dpM">
-                                <rect key="frame" x="87" y="354.5" width="41.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egU-tT-zaV">
-                                <rect key="frame" x="285.5" y="354.5" width="41.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="157" translatesAutoresizingMaskIntoConstraints="NO" id="TKh-5e-dIz">
+                                <rect key="frame" x="87" y="386.5" width="240" height="20.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeX-IH-dpM">
+                                        <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egU-tT-zaV">
+                                        <rect key="frame" x="198.5" y="0.0" width="41.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abE-gP-iR7">
                                 <rect key="frame" x="163" y="417" width="88" height="30"/>
                                 <state key="normal" title="Watch trailer"/>
@@ -598,6 +603,21 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rQ-TM-lq6" customClass="CosmosView" customModule="Cosmos">
+                                <rect key="frame" x="84.5" y="234" width="245" height="142.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                        <real key="value" value="45"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="U2v-4u-AxY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -610,18 +630,19 @@
                             <constraint firstItem="KP9-Fu-cyt" firstAttribute="leading" secondItem="U2v-4u-AxY" secondAttribute="leading" constant="10" id="L8a-Ay-cwG"/>
                             <constraint firstItem="KP9-Fu-cyt" firstAttribute="top" secondItem="77w-2x-H4n" secondAttribute="bottom" constant="10" id="Lbp-Eg-Exw"/>
                             <constraint firstItem="77w-2x-H4n" firstAttribute="top" secondItem="HRi-lf-zPy" secondAttribute="bottom" constant="8" symbolic="YES" id="Lgu-nI-bJx"/>
-                            <constraint firstItem="rKP-gS-Cca" firstAttribute="trailing" secondItem="egU-tT-zaV" secondAttribute="trailing" id="Lom-7O-BUc"/>
                             <constraint firstItem="77w-2x-H4n" firstAttribute="leading" secondItem="KP9-Fu-cyt" secondAttribute="leading" id="Ma8-ce-ZfN"/>
                             <constraint firstItem="vCZ-5C-Mad" firstAttribute="leading" secondItem="KP9-Fu-cyt" secondAttribute="trailing" constant="5" id="Q2M-sv-dkY"/>
                             <constraint firstItem="U2v-4u-AxY" firstAttribute="trailing" secondItem="77w-2x-H4n" secondAttribute="trailing" constant="10" id="QJW-dC-RdR"/>
+                            <constraint firstItem="TKh-5e-dIz" firstAttribute="top" secondItem="0rQ-TM-lq6" secondAttribute="bottom" constant="10" id="R7C-dj-nYn"/>
                             <constraint firstItem="U2v-4u-AxY" firstAttribute="trailing" secondItem="vCZ-5C-Mad" secondAttribute="trailing" constant="5" id="UDe-QP-YDf"/>
                             <constraint firstItem="U2v-4u-AxY" firstAttribute="bottom" secondItem="KP9-Fu-cyt" secondAttribute="bottom" constant="10" id="Vrc-hL-E8Z"/>
+                            <constraint firstItem="0rQ-TM-lq6" firstAttribute="top" secondItem="rKP-gS-Cca" secondAttribute="bottom" constant="5" id="VvZ-on-5Nm"/>
                             <constraint firstItem="abE-gP-iR7" firstAttribute="centerX" secondItem="77w-2x-H4n" secondAttribute="centerX" id="bTb-8T-2aq"/>
-                            <constraint firstItem="U2v-4u-AxY" firstAttribute="bottom" secondItem="egU-tT-zaV" secondAttribute="bottom" constant="487" id="cdq-hn-NNr"/>
                             <constraint firstItem="HRi-lf-zPy" firstAttribute="leading" secondItem="abE-gP-iR7" secondAttribute="trailing" constant="44" id="cw1-Mr-P5f"/>
                             <constraint firstItem="77w-2x-H4n" firstAttribute="top" secondItem="abE-gP-iR7" secondAttribute="bottom" constant="10" id="fa7-oc-vh2"/>
-                            <constraint firstItem="rKP-gS-Cca" firstAttribute="leading" secondItem="QeX-IH-dpM" secondAttribute="leading" id="yIb-Ph-U0P"/>
-                            <constraint firstItem="egU-tT-zaV" firstAttribute="baseline" secondItem="QeX-IH-dpM" secondAttribute="baseline" id="zUT-iG-ebZ"/>
+                            <constraint firstItem="0rQ-TM-lq6" firstAttribute="centerX" secondItem="U2v-4u-AxY" secondAttribute="centerX" id="h5F-hS-WuM"/>
+                            <constraint firstItem="TKh-5e-dIz" firstAttribute="centerX" secondItem="U2v-4u-AxY" secondAttribute="centerX" id="nzi-mR-jJG"/>
+                            <constraint firstItem="abE-gP-iR7" firstAttribute="top" secondItem="TKh-5e-dIz" secondAttribute="bottom" constant="10" id="uqG-dm-mtc"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="aVI-XM-fV0"/>
@@ -630,6 +651,7 @@
                         <outlet property="movieImageView" destination="rKP-gS-Cca" id="4k6-6z-jTT"/>
                         <outlet property="newReviewTextField" destination="KP9-Fu-cyt" id="gBV-og-FS3"/>
                         <outlet property="postReviewButton" destination="vCZ-5C-Mad" id="fHj-OC-PdN"/>
+                        <outlet property="ratingView" destination="0rQ-TM-lq6" id="tip-t6-oX0"/>
                         <outlet property="reviewsTableView" destination="77w-2x-H4n" id="AMP-0M-xKU"/>
                         <outlet property="titleLabel" destination="QeX-IH-dpM" id="QVQ-L7-R6r"/>
                     </connections>
@@ -639,6 +661,11 @@
             <point key="canvasLocation" x="4252.1739130434789" y="1925.8928571428571"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="0rQ-TM-lq6">
+            <size key="intrinsicContentSize" width="245" height="45"/>
+        </designable>
+    </designables>
     <resources>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
