@@ -37,7 +37,7 @@ class MovieViewController: UIViewController {
             switch result {
             case .success(let successMessage):
                 print(successMessage)
-                self.reviewsDatabaseService.getAllReviews(forMovieId: self.movie!.id) { (result) in
+                self.reviewsDatabaseService.getAllReviewsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
                     switch result {
                     case .success(let updatedReviews):
                         self.reviews = updatedReviews
@@ -140,6 +140,27 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         cell.dateLabel.text = review.date
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let reviewToDelete = reviews[indexPath.row]
+            reviewsDatabaseService.deleteReview(id: reviewToDelete.id) { (result) in
+                switch result {
+                case .failure(let error):
+                    print("Failed to delete review cause: \(error)")
+                case .success(let successMessage):
+                    self.reviews.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    print(successMessage)
+                }
+            }
+            
+        }
     }
     
     

@@ -125,25 +125,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9f0-P2-Shg">
-                                <rect key="frame" x="30" y="286" width="354" height="196"/>
+                                <rect key="frame" x="30" y="286" width="354" height="236"/>
                                 <subviews>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DPW-em-aNl">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="20"/>
+                                    </activityIndicatorView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EYq-Wz-0QK">
-                                        <rect key="frame" x="0.0" y="0.0" width="354" height="34"/>
+                                        <rect key="frame" x="0.0" y="40" width="354" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Genres" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l03-5o-eJX">
-                                        <rect key="frame" x="0.0" y="54" width="354" height="34"/>
+                                        <rect key="frame" x="0.0" y="94" width="354" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Почта" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9OA-OB-Dwk">
-                                        <rect key="frame" x="0.0" y="108" width="354" height="34"/>
+                                        <rect key="frame" x="0.0" y="148" width="354" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Пароль" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iOw-9x-uZT">
-                                        <rect key="frame" x="0.0" y="162" width="354" height="34"/>
+                                        <rect key="frame" x="0.0" y="202" width="354" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -186,6 +189,7 @@
                     <connections>
                         <outlet property="genreTextField" destination="l03-5o-eJX" id="MsB-Pi-fMa"/>
                         <outlet property="movieImageView" destination="ezd-9z-AMq" id="gwf-dG-TCF"/>
+                        <outlet property="savingActivityIndicator" destination="DPW-em-aNl" id="uoD-A1-ZQR"/>
                         <outlet property="titleTextField" destination="EYq-Wz-0QK" id="utD-Gf-5ZW"/>
                     </connections>
                 </viewController>

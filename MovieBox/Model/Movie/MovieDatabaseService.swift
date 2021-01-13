@@ -11,13 +11,13 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class MovieDatabaseService {
+    
     static let shared = MovieDatabaseService()
     let storageRef = Storage.storage().reference()
     let firestore = Firestore.firestore()
-    var allMovies: [Movie] = []
     
     private init() {
-        updateAllMovies()
+
     }
     
     func saveMovie(title: String, genre: String, image: UIImage, videoURL: URL,
@@ -112,21 +112,6 @@ class MovieDatabaseService {
         }
     }
     
-    func numberOfMovies() -> Int {
-        var moviesCount = 0
-        getAllMovies { result in
-            switch result {
-            case .success(let movies):
-                moviesCount = movies.count
-            case .failure(let error):
-                print("Can't get num of movies cause: \(error)")
-                moviesCount = 0
-            }
-        }
-        
-        return moviesCount
-    }
-    
     func getAllMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
         firestore.collection("movies").getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -147,21 +132,12 @@ class MovieDatabaseService {
         }
     }
     
-    public func updateAllMovies() {
-        getAllMovies { result in
-            switch result {
-            case .success(let movies):
-                self.allMovies = movies
-            case .failure(let error):
-                print("Something went wrong cause: \(error)")
-            }
-        }
-    }
-    
-    public func deleteMovie(id: String, num: Int) {
+    public func deleteMovie(id: String, num: Int,
+                            completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("movies").document(id).delete { error in
             if let error = error {
                 print("Couldn't delete document from firestore cause: \(error)")
+                completion(.failure(error))
             }
         }
         storageRef.child("movie_image").child(id).delete { error in
@@ -174,7 +150,7 @@ class MovieDatabaseService {
                 print("Couldn't delete video trailer from storage cause: \(error)")
             }
         }
-        allMovies.remove(at: num)
+        completion(.success("Movie is deleted."))
     }
     
     public enum DatabaseError: Error {

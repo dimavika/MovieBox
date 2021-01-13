@@ -11,20 +11,19 @@ class MoviesTableViewController: UITableViewController {
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
+    var movies = [Movie]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        
+        updateMovies()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        moviesDatabaseService.updateAllMovies()
-        self.tableView.reloadData()
+        
+        updateMovies()
     }
     
     // MARK: - Table view data source
@@ -36,15 +35,15 @@ class MoviesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return moviesDatabaseService.allMovies.count
+        return movies.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedMovie = moviesDatabaseService.allMovies[indexPath.row]
+        let selectedMovie = movies[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
             if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
                 viewController.movie = selectedMovie
-                reviewsDatabaseService.getAllReviews(forMovieId: selectedMovie.id) { (result) in
+                reviewsDatabaseService.getAllReviewsForCurrentMovie(forMovieId: selectedMovie.id) { (result) in
                     switch result {
                     case .success(let reviews):
                         viewController.reviews = reviews
@@ -60,7 +59,7 @@ class MoviesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-        let movie = moviesDatabaseService.allMovies[indexPath.row]
+        let movie = movies[indexPath.row]
         
         cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
@@ -71,7 +70,7 @@ class MoviesTableViewController: UITableViewController {
             case .success(let image):
                 cell.movieImageView.image = image
                 cell.imageActivityIndicator.stopAnimating()
-            //MARK: DEFAULT PICTURE
+            //MARK: TODO DEFAULT PICTURE
             case .failure(let error):
                 print("No image cause: \(error)")
             }
@@ -92,11 +91,21 @@ class MoviesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let movieToDelete = moviesDatabaseService.allMovies[indexPath.row]
-            moviesDatabaseService.deleteMovie(id: movieToDelete.id, num: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let movieToDelete = movies[indexPath.row]
+            moviesDatabaseService.deleteMovie(id: movieToDelete.id, num: indexPath.row) { (result) in
+                switch result {
+                case .failure(let error):
+                    print("Failed to delete movie cause: \(error)")
+                case .success(let successMessage):
+                    self.movies.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    print(successMessage)
+                }
+            }
+            
         }
     }
 
@@ -115,4 +124,19 @@ class MoviesTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension MoviesTableViewController {
+    
+    func updateMovies() {
+        moviesDatabaseService.getAllMovies { result in
+            switch result {
+            case .success(let movies):
+                self.movies = movies
+                self.tableView.reloadData()
+            case .failure(let error):
+                print("Cannot get movies cause: \(error)")
+            }
+        }
+    }
 }

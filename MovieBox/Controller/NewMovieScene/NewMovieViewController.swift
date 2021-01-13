@@ -13,6 +13,8 @@ class NewMovieViewController: UIViewController {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var genreTextField: UITextField!
+    @IBOutlet weak var savingActivityIndicator: UIActivityIndicatorView!
+    
     var videoURL: URL?
     let databaseService = MovieDatabaseService.shared
     
@@ -33,16 +35,18 @@ class NewMovieViewController: UIViewController {
     }
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        savingActivityIndicator.startAnimating()
         guard let image = movieImageView.image else { return }
         databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, image: image, videoURL: videoURL!) { (result) in
             switch result {
             case .success(let successMessage):
+                self.savingActivityIndicator.stopAnimating()
+                self.navigationController?.popViewController(animated: true)
                 print(successMessage)
             case .failure(let error):
                 print(error)
             }
         }
-        self.navigationController?.popViewController(animated: true)
     }
     /*
     // MARK: - Navigation
