@@ -11,6 +11,7 @@ class MoviesTableViewController: UITableViewController {
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
+    let ratingDatabaseService = RatingDatabaseService.shared
     var movies = [Movie]()
     
     override func viewDidLoad() {
@@ -63,6 +64,19 @@ class MoviesTableViewController: UITableViewController {
         
         cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
+        ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
+            switch result {
+            case .failure(let error):
+                cell.ratingLabel.text = "-"
+                print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
+            case .success(let rating):
+                if rating.isEqual(to: 0.0) {
+                    cell.ratingLabel.text = "-"
+                } else {
+                    cell.ratingLabel.text = String(format: "%.1f", rating)
+                }
+            }
+        }
 
         cell.imageActivityIndicator.startAnimating()
         moviesDatabaseService.downloadImage(forURL: movie.imageUrl) { result in
@@ -101,6 +115,8 @@ class MoviesTableViewController: UITableViewController {
                     print("Failed to delete movie cause: \(error)")
                 case .success(let successMessage):
                     self.movies.remove(at: indexPath.row)
+                    self.reviewsDatabaseService.deleteAllReviewsForCurrentMovie(forMovieId: movieToDelete.id)
+                    self.ratingDatabaseService.deleteAllRatingsForCurrentMovie(forMovieId: movieToDelete.id)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                     print(successMessage)
                 }
