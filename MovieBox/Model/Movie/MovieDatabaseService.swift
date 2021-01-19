@@ -132,8 +132,7 @@ class MovieDatabaseService {
         }
     }
     
-    public func deleteMovie(id: String, num: Int,
-                            completion: @escaping (Result<String, Error>) -> Void) {
+    public func deleteMovie(id: String, completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("movies").document(id).delete { error in
             if let error = error {
                 print("Couldn't delete document from firestore cause: \(error)")

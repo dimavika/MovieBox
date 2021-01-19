@@ -10,9 +10,11 @@ import FirebaseStorage
 import FirebaseDatabase
 
 class NewMovieViewController: UIViewController {
+    
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var genreTextField: UITextField!
+    @IBOutlet weak var videoLabel: UILabel!
     @IBOutlet weak var savingActivityIndicator: UIActivityIndicatorView!
     
     var videoURL: URL?
@@ -30,7 +32,7 @@ class NewMovieViewController: UIViewController {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
-        imagePickerController.mediaTypes = ["public.image", "public.movie"]
+        imagePickerController.mediaTypes = ["public.image"]
         present(imagePickerController, animated: true, completion: nil)
     }
     
@@ -44,10 +46,30 @@ class NewMovieViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
                 print(successMessage)
             case .failure(let error):
+                self.savingActivityIndicator.stopAnimating()
                 print(error)
             }
         }
     }
+    
+    @IBAction func videoButtonPressed(_ sender: UIButton) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.mediaTypes = ["public.movie"]
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    @IBAction func titleTextFieldDidChange(_ sender: UITextField) {
+        checkAvailabilityToSave()
+    }
+    
+    @IBAction func genreTextFieldDidChange(_ sender: UITextField) {
+        checkAvailabilityToSave()
+    }
+    
+    
+    
     /*
     // MARK: - Navigation
 
@@ -64,9 +86,28 @@ extension NewMovieViewController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage { movieImageView.image = image
-        } else if let url = info[.mediaURL] as? URL {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            movieImageView.image = image
+            checkAvailabilityToSave()
+        } else
+        if let url = info[.mediaURL] as? URL {
             videoURL = url
-                } else { return }
+            videoLabel.text = "\(url)"
+            checkAvailabilityToSave()
+        } else { return }
+    }
+    
+    func checkAvailabilityToSave() {
+        if !titleTextField.text!.isEmpty {
+            if !genreTextField.text!.isEmpty {
+                if movieImageView.image != nil {
+                    if videoLabel.text != "No video" {
+                        navigationItem.rightBarButtonItem!.isEnabled = true
+                        return
+                    }
+                }
+            }
+        }
+        navigationItem.rightBarButtonItem!.isEnabled = false
     }
 }

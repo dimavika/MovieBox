@@ -20,6 +20,7 @@
 		E4244378252F87AE00033508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4244376252F87AE00033508 /* LaunchScreen.storyboard */; };
 		E4244385252F8AF200033508 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244384252F8AF200033508 /* SignUpViewController.swift */; };
 		E4244389252F8B9000033508 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244388252F8B9000033508 /* SignInViewController.swift */; };
+		E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427981D25B275D500875060 /* AdminDatabaseService.swift */; };
 		E4296E82258D1A32002BA912 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4296E81258D1A32002BA912 /* Movie.swift */; };
 		E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A815F2559775E00476E1B /* MovieTableViewCell.swift */; };
 		E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A817F2559913500476E1B /* NewMovieViewController.swift */; };
@@ -51,6 +52,7 @@
 		E4244379252F87AE00033508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4244384252F8AF200033508 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E4244388252F8B9000033508 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		E427981D25B275D500875060 /* AdminDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDatabaseService.swift; sourceTree = "<group>"; };
 		E4296E81258D1A32002BA912 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		E43A815F2559775E00476E1B /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		E43A817F2559913500476E1B /* NewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMovieViewController.swift; sourceTree = "<group>"; };
@@ -205,12 +207,21 @@
 		E4244382252F89D100033508 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E427981C25B275B700875060 /* Admin */,
 				E4904F7125A1342700BF053E /* Rating */,
 				E4714DEB259D2B0E00991A78 /* Review */,
 				E4296E80258D1A15002BA912 /* Movie */,
 				E44E59552540D454006BA108 /* Auth */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E427981C25B275B700875060 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				E427981D25B275D500875060 /* AdminDatabaseService.swift */,
+			);
+			path = Admin;
 			sourceTree = "<group>";
 		};
 		E4296E80258D1A15002BA912 /* Movie */ = {
@@ -384,6 +395,7 @@
 			files = (
 				E4296E82258D1A32002BA912 /* Movie.swift in Sources */,
 				E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */,
+				E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */,
 				E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */,
 				E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */,
 				E4244370252F87AB00033508 /* MainViewController.swift in Sources */,

@@ -6,17 +6,18 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MoviesTableViewController: UITableViewController {
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
+    let adminDatabaseService = AdminDatabaseService.shared
     var movies = [Movie]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         updateMovies()
     }
@@ -24,6 +25,7 @@ class MoviesTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        checkAvailabilityOfAddButton()
         updateMovies()
     }
     
@@ -103,13 +105,23 @@ class MoviesTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        //MARK: TODO
+        var editingStyle = UITableViewCell.EditingStyle.none
+        check { (result) in
+            switch result {
+            case .success(let style):
+                editingStyle = style
+            case .failure( _):
+                print("")
+            }
+        }
+        return editingStyle
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let movieToDelete = movies[indexPath.row]
-            moviesDatabaseService.deleteMovie(id: movieToDelete.id, num: indexPath.row) { (result) in
+            moviesDatabaseService.deleteMovie(id: movieToDelete.id) { (result) in
                 switch result {
                 case .failure(let error):
                     print("Failed to delete movie cause: \(error)")
@@ -121,7 +133,6 @@ class MoviesTableViewController: UITableViewController {
                     print(successMessage)
                 }
             }
-            
         }
     }
 
@@ -144,7 +155,7 @@ class MoviesTableViewController: UITableViewController {
 
 extension MoviesTableViewController {
     
-    func updateMovies() {
+    private func updateMovies() {
         moviesDatabaseService.getAllMovies { result in
             switch result {
             case .success(let movies):
@@ -152,6 +163,36 @@ extension MoviesTableViewController {
                 self.tableView.reloadData()
             case .failure(let error):
                 print("Cannot get movies cause: \(error)")
+            }
+        }
+    }
+    
+    private func checkAvailabilityOfAddButton() {
+        let uid = Auth.auth().currentUser!.uid
+        adminDatabaseService.checkUserIsAdmin(uid: uid) { (result) in
+            switch result {
+            case .failure(let error):
+                print("Cannot get admin info cause: \(error)")
+            case .success(let isAdmin):
+                if !isAdmin {
+                    self.navigationItem.setRightBarButton(nil, animated: false)
+                }
+            }
+        }
+    }
+    
+    private func check(completion: @escaping (Result<UITableViewCell.EditingStyle, Error>) -> Void) {
+        let uid = Auth.auth().currentUser!.uid
+        adminDatabaseService.checkUserIsAdmin(uid: uid) { (result) in
+            switch result {
+            case .failure(let error):
+                print("Cannot get admin info cause: \(error)")
+            case .success(let isAdmin):
+                if !isAdmin {
+                    completion(.success(.none))
+                } else {
+                    completion(.success(.delete))
+                }
             }
         }
     }

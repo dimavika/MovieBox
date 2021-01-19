@@ -12,7 +12,6 @@ class RatingDatabaseService {
     
     static let shared = RatingDatabaseService()
     let firestore = Firestore.firestore()
-    var allRatings: [Rating] = []
     
     private init(){
         
@@ -20,17 +19,41 @@ class RatingDatabaseService {
     
     func saveRating(movieId: String, value: Int, username: String,
                    completion: @escaping (Result<String, Error>) -> Void) {
-        let ratingId = "\(Int.random(in: 1...1000000))"
-        firestore.collection("ratings").document(ratingId)
-            .setData(["id" : ratingId,
-                      "movie_id" : movieId,
-                      "value" : value,
-                      "username" : username]) { (error) in
-                if let error = error {
-                    completion(.failure(error))
+        firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("username", isEqualTo: username)
+            .getDocuments { (querySnapshot, _) in
+                let ratings: [Rating] = querySnapshot!.documents.compactMap { dictionary in
+                    guard let id = dictionary["id"] as? String,
+                          let movieId = dictionary["movie_id"] as? String,
+                          let value = dictionary["value"] as? Int,
+                          let username = dictionary["username"] as? String else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, username: username)
                 }
-                completion(.success("Saving rating is done!"))
-            }
+                //Checking if user rating is already exist
+                if ratings.isEmpty {
+                    let ratingId = "\(Int.random(in: 1...1000000))"
+                    self.firestore.collection("ratings").document(ratingId)
+                        .setData(["id" : ratingId,
+                                  "movie_id" : movieId,
+                                  "value" : value,
+                                  "username" : username]) { (error) in
+                            if let error = error {
+                                completion(.failure(error))
+                            }
+                            completion(.success("Saving rating is done!"))
+                        }
+                } else {
+                    self.firestore.collection("ratings").document(ratings[0].id)
+                        .setData(["id" : ratings[0].id,
+                                  "movie_id" : movieId,
+                                  "value" : value,
+                                  "username" : username]) { (error) in
+                            if let error = error {
+                                completion(.failure(error))
+                            }
+                            completion(.success("Saving rating is done!"))
+                        }
+                }
+        }
     }
     
     func getUserRatingForCurrentMovie(movieId: String, username: String,
