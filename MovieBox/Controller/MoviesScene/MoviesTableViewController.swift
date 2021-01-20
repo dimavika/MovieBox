@@ -73,8 +73,16 @@ class MoviesTableViewController: UITableViewController {
                 print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
             case .success(let rating):
                 if rating.isEqual(to: 0.0) {
+                    cell.ratingLabel.textColor = .black
                     cell.ratingLabel.text = "-"
                 } else {
+                    if rating <= 2.0 {
+                        cell.ratingLabel.textColor = .red
+                    } else if rating < 4.0 {
+                        cell.ratingLabel.textColor = .gray
+                    } else {
+                        cell.ratingLabel.textColor = .systemGreen
+                    }
                     cell.ratingLabel.text = String(format: "%.1f", rating)
                 }
             }

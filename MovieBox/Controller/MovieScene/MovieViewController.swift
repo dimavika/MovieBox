@@ -25,10 +25,13 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var deleteMovieButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var countryLabel: UILabel!
+    @IBOutlet weak var sloganLabel: UILabel!
     @IBOutlet weak var reviewsTableView: UITableView!
     @IBOutlet weak var newReviewTextField: UITextField!
     @IBOutlet weak var postReviewButton: UIButton!
+    @IBOutlet weak var showReviewsButton: UIButton!
+    
     @IBOutlet weak var ratingView: CosmosView!
     
     
@@ -40,11 +43,14 @@ class MovieViewController: UIViewController {
         updateUserRating()
         didTouchRating()
         
+        movieImageView.layer.cornerRadius = 10
         reviewsTableView.delegate = self
         reviewsTableView.dataSource = self
         reviewsTableView.estimatedRowHeight = 100
-        titleLabel.text = movie?.title
-        genreLabel.text = movie?.genre
+        titleLabel.text = "\(movie!.title) (\(movie!.year))"
+        genreLabel.text = movie!.genre
+        countryLabel.text = movie!.country
+        sloganLabel.text = movie!.slogan
         movieImageView.image = movieImage
     }
     
@@ -81,9 +87,17 @@ class MovieViewController: UIViewController {
     
     @IBAction func showReviewsButtonPressed(_ sender: UIButton) {
         reviewsTableView.reloadData()
-        reviewsTableView.isHidden = false
-        newReviewTextField.isHidden = false
-        postReviewButton.isHidden = false
+        if showReviewsButton.currentTitle! == "Show reviews" {
+            showReviewsButton.setTitle("Hide reviews", for: .normal)
+            reviewsTableView.isHidden = false
+            newReviewTextField.isHidden = false
+            postReviewButton.isHidden = false
+        } else {
+            showReviewsButton.setTitle("Show reviews", for: .normal)
+            reviewsTableView.isHidden = true
+            newReviewTextField.isHidden = true
+            postReviewButton.isHidden = true
+        }
     }
     
     @IBAction func deleteMovieButtonPressed(_ sender: UIButton) {

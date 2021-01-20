@@ -13,7 +13,10 @@ class NewMovieViewController: UIViewController {
     
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var yearTextField: UITextField!
     @IBOutlet weak var genreTextField: UITextField!
+    @IBOutlet weak var countryTextField: UITextField!
+    @IBOutlet weak var sloganTextField: UITextField!
     @IBOutlet weak var videoLabel: UILabel!
     @IBOutlet weak var savingActivityIndicator: UIActivityIndicatorView!
     
@@ -39,7 +42,7 @@ class NewMovieViewController: UIViewController {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         savingActivityIndicator.startAnimating()
         guard let image = movieImageView.image else { return }
-        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, image: image, videoURL: videoURL!) { (result) in
+        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, year: yearTextField.text!, country: countryTextField.text!, slogan: sloganTextField.text!, image: image, videoURL: videoURL!) { (result) in
             switch result {
             case .success(let successMessage):
                 self.savingActivityIndicator.stopAnimating()
@@ -68,7 +71,17 @@ class NewMovieViewController: UIViewController {
         checkAvailabilityToSave()
     }
     
+    @IBAction func yearTextFieldDidChange(_ sender: UITextField) {
+        checkAvailabilityToSave()
+    }
     
+    @IBAction func countryTextFieldDidChange(_ sender: UITextField) {
+        checkAvailabilityToSave()
+    }
+    
+    @IBAction func sloganTextFieldDidChange(_ sender: UITextField) {
+        checkAvailabilityToSave()
+    }
     
     /*
     // MARK: - Navigation
@@ -100,10 +113,16 @@ extension NewMovieViewController: UIImagePickerControllerDelegate, UINavigationC
     func checkAvailabilityToSave() {
         if !titleTextField.text!.isEmpty {
             if !genreTextField.text!.isEmpty {
-                if movieImageView.image != nil {
-                    if videoLabel.text != "No video" {
-                        navigationItem.rightBarButtonItem!.isEnabled = true
-                        return
+                if !yearTextField.text!.isEmpty {
+                    if !countryTextField.text!.isEmpty {
+                        if !sloganTextField.text!.isEmpty {
+                            if movieImageView.image != nil {
+                                if videoLabel.text != "No video" {
+                                    navigationItem.rightBarButtonItem!.isEnabled = true
+                                    return
+                                }
+                            }
+                        }
                     }
                 }
             }

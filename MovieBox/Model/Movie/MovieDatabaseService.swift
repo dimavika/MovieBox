@@ -20,7 +20,7 @@ class MovieDatabaseService {
 
     }
     
-    func saveMovie(title: String, genre: String, image: UIImage, videoURL: URL,
+    func saveMovie(title: String, genre: String, year: String, country: String, slogan: String, image: UIImage, videoURL: URL,
                    completion: @escaping (Result<String, Error>) -> Void) {
         let movieId = "\(Int.random(in: 1...1000000))"
         uploadImage(imageId: movieId, image: image) { (myresult) in
@@ -35,6 +35,9 @@ class MovieDatabaseService {
                             .setData(["id" : movieId,
                                       "title" : title,
                                       "genre" : genre,
+                                      "year" : year,
+                                      "country" : country,
+                                      "slogan" : slogan,
                                       "image_url" : imageUrl,
                                       "video_url" : videoDownloadURL]) { (error) in
                                 if let error = error {
@@ -121,9 +124,12 @@ class MovieDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let title = dictionary["title"] as? String,
                           let genre = dictionary["genre"] as? String,
+                          let year = dictionary["year"] as? String,
+                          let country = dictionary["country"] as? String,
+                          let slogan = dictionary["slogan"] as? String,
                           let imageUrl = dictionary["image_url"] as? String,
                           let videoUrl = dictionary["video_url"] as? String else { return nil }
-                    return Movie(id: id, title: title, genre: genre, imageUrl: imageUrl,
+                    return Movie(id: id, title: title, genre: genre, year: year, country: country, slogan: slogan, imageUrl: imageUrl,
                                  videoUrl: videoUrl)
                 }
                 
