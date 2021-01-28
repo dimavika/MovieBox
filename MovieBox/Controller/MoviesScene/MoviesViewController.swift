@@ -1,24 +1,32 @@
 //
-//  MoviesTableViewController.swift
+//  MoviesViewController.swift
 //  MovieBox
 //
-//  Created by Димас on 02.11.2020.
+//  Created by Димас on 28.01.2021.
 //
 
 import UIKit
 import FirebaseAuth
 
-class MoviesTableViewController: UITableViewController {
-    
+class MoviesViewController: UIViewController {
+
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
     let adminDatabaseService = AdminDatabaseService.shared
     var movies = [Movie]()
+    var searchedMovies = [Movie]()
+    var searching = false
+    
+    @IBOutlet weak var moviesTableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        moviesTableView.delegate = self
+        searchBar.delegate = self
+        moviesTableView.dataSource = self
         updateMovies()
     }
     
@@ -28,20 +36,20 @@ class MoviesTableViewController: UITableViewController {
         checkAvailabilityOfAddButton()
         updateMovies()
     }
-    
-    // MARK: - Table view data source
+}
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return movies.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searching ? searchedMovies.count : movies.count
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedMovie = movies[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
             if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
@@ -59,31 +67,39 @@ class MoviesTableViewController: UITableViewController {
             }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-        let movie = movies[indexPath.row]
+        var movie: Movie
+        if searching {
+            movie = searchedMovies[indexPath.row]
+        } else {
+            movie = movies[indexPath.row]
+        }
         
-        cell.titleLabel.text = movie.title
+        cell.titleLabel.text = "\(movie.title) (\(movie.year))"
         cell.genreLabel.text = movie.genre
+        cell.countryLabel.text = movie.country
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
             switch result {
             case .failure(let error):
                 cell.ratingLabel.text = "-"
                 print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
-            case .success(let rating):
-                if rating.isEqual(to: 0.0) {
+            case .success(let ratingInfo):
+                if ratingInfo.rating.isEqual(to: 0.0) {
                     cell.ratingLabel.textColor = .black
                     cell.ratingLabel.text = "-"
+                    cell.ratingCountLabel.text = "0"
                 } else {
-                    if rating <= 2.0 {
+                    if ratingInfo.rating <= 2.0 {
                         cell.ratingLabel.textColor = .red
-                    } else if rating < 4.0 {
+                    } else if ratingInfo.rating < 4.0 {
                         cell.ratingLabel.textColor = .gray
                     } else {
                         cell.ratingLabel.textColor = .systemGreen
                     }
-                    cell.ratingLabel.text = String(format: "%.1f", rating)
+                    cell.ratingLabel.text = String(format: "%.1f", ratingInfo.rating)
+                    cell.ratingCountLabel.text = "\(ratingInfo.count)"
                 }
             }
         }
@@ -112,7 +128,7 @@ class MoviesTableViewController: UITableViewController {
     */
 
     
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         //MARK: TODO
         var editingStyle = UITableViewCell.EditingStyle.none
         check { (result) in
@@ -126,7 +142,7 @@ class MoviesTableViewController: UITableViewController {
         return editingStyle
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let movieToDelete = movies[indexPath.row]
             moviesDatabaseService.deleteMovie(id: movieToDelete.id) { (result) in
@@ -143,32 +159,53 @@ class MoviesTableViewController: UITableViewController {
             }
         }
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
 }
 
-extension MoviesTableViewController {
+extension MoviesViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchedMovies.removeAll()
+        for movie in movies {
+            if movie.title.lowercased().starts(with: searchText.lowercased()) {
+                searchedMovies.append(movie)
+            }
+        }
+        searching = true
+        moviesTableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searching = false
+        moviesTableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        if searching {
+            if selectedScope == 0 {
+                
+            } else {
+                searchedMovies.sort(by: {Int($0.year)! > Int($1.year)!})
+            }
+        } else {
+            if selectedScope == 0 {
+                
+            } else {
+                movies.sort(by: {Int($0.year)! > Int($1.year)!})
+            }
+        }
+        moviesTableView.reloadData()
+    }
+}
+
+extension MoviesViewController {
     
     private func updateMovies() {
         moviesDatabaseService.getAllMovies { result in
             switch result {
             case .success(let movies):
                 self.movies = movies
-                self.tableView.reloadData()
+                self.moviesTableView.reloadData()
             case .failure(let error):
                 print("Cannot get movies cause: \(error)")
             }

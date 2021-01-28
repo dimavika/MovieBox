@@ -75,7 +75,7 @@ class RatingDatabaseService {
         }
     }
     
-    func getAverageRatingForMovie(movieId: String, completion: @escaping (Result<Double, Error>) -> Void) {
+    func getAverageRatingForMovie(movieId: String, completion: @escaping (Result<(rating: Double, count: Int), Error>) -> Void) {
         firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -90,12 +90,12 @@ class RatingDatabaseService {
                 
                 var sumOfRatings = 0.0
                 if ratings.isEmpty {
-                    completion(.success(sumOfRatings))
+                    completion(.success((sumOfRatings, ratings.count)))
                 } else {
                     for rating in ratings {
                         sumOfRatings += Double(rating.value)
                     }
-                    completion(.success(sumOfRatings / Double(ratings.count)))
+                    completion(.success((sumOfRatings / Double(ratings.count), ratings.count)))
                 }
             }
         }

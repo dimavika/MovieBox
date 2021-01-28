@@ -27,6 +27,7 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var sloganLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var reviewsTableView: UITableView!
     @IBOutlet weak var newReviewTextField: UITextField!
     @IBOutlet weak var postReviewButton: UIButton!
@@ -50,7 +51,8 @@ class MovieViewController: UIViewController {
         titleLabel.text = "\(movie!.title) (\(movie!.year))"
         genreLabel.text = movie!.genre
         countryLabel.text = movie!.country
-        sloganLabel.text = movie!.slogan
+        sloganLabel.text = "\"\(movie!.slogan)\""
+        descriptionLabel.text = movie!.description
         movieImageView.image = movieImage
     }
     
@@ -88,11 +90,13 @@ class MovieViewController: UIViewController {
     @IBAction func showReviewsButtonPressed(_ sender: UIButton) {
         reviewsTableView.reloadData()
         if showReviewsButton.currentTitle! == "Show reviews" {
+            descriptionLabel.isHidden = true
             showReviewsButton.setTitle("Hide reviews", for: .normal)
             reviewsTableView.isHidden = false
             newReviewTextField.isHidden = false
             postReviewButton.isHidden = false
         } else {
+            descriptionLabel.isHidden = false
             showReviewsButton.setTitle("Show reviews", for: .normal)
             reviewsTableView.isHidden = true
             newReviewTextField.isHidden = true

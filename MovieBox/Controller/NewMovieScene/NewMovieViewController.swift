@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseStorage
 import FirebaseDatabase
+import MultilineTextField
 
 class NewMovieViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class NewMovieViewController: UIViewController {
     @IBOutlet weak var genreTextField: UITextField!
     @IBOutlet weak var countryTextField: UITextField!
     @IBOutlet weak var sloganTextField: UITextField!
+    @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var videoLabel: UILabel!
     @IBOutlet weak var savingActivityIndicator: UIActivityIndicatorView!
     
@@ -29,6 +31,7 @@ class NewMovieViewController: UIViewController {
         super.viewDidLoad()
         movieImageView.layer.cornerRadius = 50
         movieImageView.layer.borderWidth = 0.5
+        descriptionTextView.layer.borderColor = UIColor(red: 234.0/255.0, green: 198.0/255.0, blue: 207.0/255.0, alpha: 1.0).cgColor
     }
     
     @IBAction func photoButtonPressed(_ sender: UIButton) {
@@ -42,7 +45,7 @@ class NewMovieViewController: UIViewController {
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         savingActivityIndicator.startAnimating()
         guard let image = movieImageView.image else { return }
-        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, year: yearTextField.text!, country: countryTextField.text!, slogan: sloganTextField.text!, image: image, videoURL: videoURL!) { (result) in
+        databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, year: yearTextField.text!, country: countryTextField.text!, slogan: sloganTextField.text!, description: descriptionTextView.text, image: image, videoURL: videoURL!) { (result) in
             switch result {
             case .success(let successMessage):
                 self.savingActivityIndicator.stopAnimating()

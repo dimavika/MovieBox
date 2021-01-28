@@ -17,7 +17,6 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print(Auth.auth().currentUser?.displayName ?? "No name")
     }
 
 
