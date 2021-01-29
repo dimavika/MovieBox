@@ -53,15 +53,16 @@ class ReviewDatabaseService{
         }
     }
     
-    func deleteAllReviewsForCurrentMovie(forMovieId: String) {
+    func deleteAllReviewsForCurrentMovie(forMovieId: String, completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("reviews").whereField("movie_id", isEqualTo: forMovieId)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
-                    print("Cannot get reviews for movie with id: \(forMovieId), cause: \(error)")
+                    completion(.failure(error))
                 } else {
                     for document in querySnapshot!.documents {
                         self.firestore.collection("reviews").document(document.get("id") as! String).delete()
                     }
+                    completion(.success("All reviews for movie with id: \(forMovieId) deleted."))
                 }
         }
     }

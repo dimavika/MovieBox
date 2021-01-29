@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Review{
+struct Review{
     
     public var id: String
     public var movieId: String

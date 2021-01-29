@@ -112,10 +112,22 @@ class MovieViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 print("Failed to delete movie cause: \(error)")
             case .success(let successMessage):
-                self.reviewsDatabaseService.deleteAllReviewsForCurrentMovie(forMovieId: self.movie!.id)
-                self.ratingDatabaseService.deleteAllRatingsForCurrentMovie(forMovieId: self.movie!.id)
-                self.activityIndicator.stopAnimating()
-                self.navigationController?.popViewController(animated: true)
+                self.reviewsDatabaseService.deleteAllReviewsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
+                    switch result {
+                    case .success( _):
+                        self.ratingDatabaseService.deleteAllRatingsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
+                            switch result {
+                            case .success( _):
+                                self.activityIndicator.stopAnimating()
+                                self.navigationController?.popViewController(animated: true)
+                            case .failure(let error):
+                                print("\(error)")
+                            }
+                        }
+                    case .failure(let error):
+                        print("\(error)")
+                    }
+                }
                 print(successMessage)
             }
         }
@@ -129,17 +141,6 @@ class MovieViewController: UIViewController {
 
         self.present(vc, animated: true) { vc.player?.play() }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
@@ -163,26 +164,26 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let reviewToDelete = reviews[indexPath.row]
-            reviewsDatabaseService.deleteReview(id: reviewToDelete.id) { (result) in
-                switch result {
-                case .failure(let error):
-                    print("Failed to delete review cause: \(error)")
-                case .success(let successMessage):
-                    self.reviews.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                    print(successMessage)
-                }
-            }
-            
-        }
-    }
+//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+//        return .delete
+//    }
+//
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            let reviewToDelete = reviews[indexPath.row]
+//            reviewsDatabaseService.deleteReview(id: reviewToDelete.id) { (result) in
+//                switch result {
+//                case .failure(let error):
+//                    print("Failed to delete review cause: \(error)")
+//                case .success(let successMessage):
+//                    self.reviews.remove(at: indexPath.row)
+//                    tableView.deleteRows(at: [indexPath], with: .fade)
+//                    print(successMessage)
+//                }
+//            }
+//
+//        }
+//    }
 }
 
 extension MovieViewController {

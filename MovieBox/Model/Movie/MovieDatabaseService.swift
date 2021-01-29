@@ -140,6 +140,28 @@ class MovieDatabaseService {
         }
     }
     
+    func getMovieById(movieId: String, completion: @escaping (Result<Movie, Error>) -> Void) {
+        firestore.collection("movies").document(movieId).getDocument { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            }
+            let movie = snapshot!.data().map { (dictionary) -> Movie? in
+                guard let id = dictionary["id"] as? String,
+                      let title = dictionary["title"] as? String,
+                      let genre = dictionary["genre"] as? String,
+                      let year = dictionary["year"] as? String,
+                      let country = dictionary["country"] as? String,
+                      let slogan = dictionary["slogan"] as? String,
+                      let description = dictionary["description"] as? String,
+                      let imageUrl = dictionary["image_url"] as? String,
+                      let videoUrl = dictionary["video_url"] as? String else { return nil }
+                return Movie(id: id, title: title, genre: genre, year: year, country: country, slogan: slogan, description: description, imageUrl: imageUrl,
+                             videoUrl: videoUrl)
+            }
+            completion(.success(movie!!))
+        }
+    }
+    
     public func deleteMovie(id: String, completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("movies").document(id).delete { error in
             if let error = error {

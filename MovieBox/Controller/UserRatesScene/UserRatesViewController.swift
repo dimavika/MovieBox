@@ -1,44 +1,67 @@
 //
-//  MoviesViewController.swift
+//  UserRatesViewController.swift
 //  MovieBox
 //
-//  Created by Димас on 28.01.2021.
+//  Created by Димас on 29.01.2021.
 //
 
 import UIKit
 import FirebaseAuth
 
-class MoviesViewController: UIViewController {
+class UserRatesViewController: UIViewController {
 
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
-    let adminDatabaseService = AdminDatabaseService.shared
-    var movies = [Movie]()
-    var searchedMovies = [Movie]()
-    var searching = false
+    var ratedMovies = [Movie]()
     
-    @IBOutlet weak var moviesTableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var ratedMoviesTableView: UITableView!
+    @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        moviesTableView.delegate = self
-        moviesTableView.dataSource = self
-        searchBar.delegate = self
-        updateMovies()
+        ratedMoviesTableView.delegate = self
+        ratedMoviesTableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        checkAvailabilityOfAddButton()
-        updateMovies()
+        switch sortSegmentedControl.selectedSegmentIndex {
+        case 0:
+            updateRatedMovies(sortType: true)
+        case 1:
+            updateRatedMovies(sortType: false)
+        default:
+            updateRatedMovies(sortType: true)
+        }
     }
+    
+    @IBAction func sortSegmControlValueChanged(_ sender: UISegmentedControl) {
+        switch sortSegmentedControl.selectedSegmentIndex {
+        case 0:
+            updateRatedMovies(sortType: true)
+        case 1:
+            updateRatedMovies(sortType: false)
+        default:
+            updateRatedMovies(sortType: true)
+        }
+    }
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }
 
-extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
+extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -46,11 +69,11 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searching ? searchedMovies.count : movies.count
+        return ratedMovies.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedMovie = movies[indexPath.row]
+        let selectedMovie = ratedMovies[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
             if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
                 viewController.movie = selectedMovie
@@ -70,12 +93,7 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-        var movie: Movie
-        if searching {
-            movie = searchedMovies[indexPath.row]
-        } else {
-            movie = movies[indexPath.row]
-        }
+        let movie = ratedMovies[indexPath.row]
         
         cell.titleLabel.text = "\(movie.title) (\(movie.year))"
         cell.genreLabel.text = movie.genre
@@ -120,66 +138,34 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MoviesViewController: UISearchBarDelegate {
+extension UserRatesViewController {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedMovies.removeAll()
-        for movie in movies {
-            if movie.title.lowercased().starts(with: searchText.lowercased()) {
-                searchedMovies.append(movie)
-            }
-        }
-        searching = true
-        moviesTableView.reloadData()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searching = false
-        moviesTableView.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        if searching {
-            if selectedScope == 0 {
-                
-            } else {
-                searchedMovies.sort(by: {Int($0.year)! > Int($1.year)!})
-            }
-        } else {
-            if selectedScope == 0 {
-                
-            } else {
-                movies.sort(by: {Int($0.year)! > Int($1.year)!})
-            }
-        }
-        moviesTableView.reloadData()
-    }
-}
-
-extension MoviesViewController {
-    
-    private func updateMovies() {
-        moviesDatabaseService.getAllMovies { result in
-            switch result {
-            case .success(let movies):
-                self.movies = movies
-                self.moviesTableView.reloadData()
-            case .failure(let error):
-                print("Cannot get movies cause: \(error)")
-            }
-        }
-    }
-    
-    private func checkAvailabilityOfAddButton() {
-        let uid = Auth.auth().currentUser!.uid
-        adminDatabaseService.checkUserIsAdmin(uid: uid) { (result) in
+    private func updateRatedMovies(sortType: Bool) {
+        ratedMovies.removeAll()
+        let username = Auth.auth().currentUser!.displayName!
+        ratingDatabaseService.getUserRatings(username: username) { (result) in
             switch result {
             case .failure(let error):
-                print("Cannot get admin info cause: \(error)")
-            case .success(let isAdmin):
-                if !isAdmin {
-                    self.navigationItem.setRightBarButton(nil, animated: false)
+                print("Can't get user ratings cause: \(error)")
+            case .success(var ratings):
+                if !ratings.isEmpty {
+                    if sortType {
+                        ratings.sort(by: { $0.value < $1.value })
+                    } else {
+                        ratings.sort(by: { $0.date.seconds < $1.date.seconds})
+                    }
+                    
+                    for rating in ratings {
+                        self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
+                            switch result {
+                            case .failure(let error):
+                                print("\(error)")
+                            case.success(let movie):
+                                self.ratedMovies.append(movie)
+                                self.ratedMoviesTableView.reloadData()
+                            }
+                        }
+                    }
                 }
             }
         }

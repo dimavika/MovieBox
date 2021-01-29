@@ -25,9 +25,14 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
+                          let date = dictionary["date"] as? Timestamp,
                           let username = dictionary["username"] as? String else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username)
+                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
                 }
+                
+                let date = Date()
+                let timestamp = Timestamp(date: date)
+                
                 //Checking if user rating is already exist
                 if ratings.isEmpty {
                     let ratingId = "\(Int.random(in: 1...1000000))"
@@ -35,7 +40,8 @@ class RatingDatabaseService {
                         .setData(["id" : ratingId,
                                   "movie_id" : movieId,
                                   "value" : value,
-                                  "username" : username]) { (error) in
+                                  "username" : username,
+                                  "date" : timestamp]) { (error) in
                             if let error = error {
                                 completion(.failure(error))
                             }
@@ -46,7 +52,8 @@ class RatingDatabaseService {
                         .setData(["id" : ratings[0].id,
                                   "movie_id" : movieId,
                                   "value" : value,
-                                  "username" : username]) { (error) in
+                                  "username" : username,
+                                  "date" : timestamp]) { (error) in
                             if let error = error {
                                 completion(.failure(error))
                             }
@@ -67,8 +74,9 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
-                          let username = dictionary["username"] as? String else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username)
+                          let username = dictionary["username"] as? String,
+                          let date = dictionary["date"] as? Timestamp else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
                 }
                 completion(.success(ratings))
             }
@@ -84,8 +92,9 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
-                          let username = dictionary["username"] as? String else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username)
+                          let username = dictionary["username"] as? String,
+                          let date = dictionary["date"] as? Timestamp else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
                 }
                 
                 var sumOfRatings = 0.0
@@ -101,15 +110,35 @@ class RatingDatabaseService {
         }
     }
     
-    func deleteAllRatingsForCurrentMovie(forMovieId: String) {
+    func getUserRatings(username: String, completion: @escaping (Result<[Rating], Error>) -> Void) {
+        firestore.collection("ratings").whereField("username", isEqualTo: username)
+            .getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                let ratings: [Rating] = querySnapshot!.documents.compactMap { dictionary in
+                    guard let id = dictionary["id"] as? String,
+                          let movieId = dictionary["movie_id"] as? String,
+                          let value = dictionary["value"] as? Int,
+                          let username = dictionary["username"] as? String,
+                          let date = dictionary["date"] as? Timestamp else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
+                }
+                completion(.success(ratings))
+            }
+        }
+    }
+    
+    func deleteAllRatingsForCurrentMovie(forMovieId: String, completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("ratings").whereField("movie_id", isEqualTo: forMovieId)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
-                    print("Cannot get ratings for movie with id: \(forMovieId), cause: \(error)")
+                    completion(.failure(error))
                 } else {
                     for document in querySnapshot!.documents {
                         self.firestore.collection("ratings").document(document.get("id") as! String).delete()
                     }
+                    completion(.success("All ratings for movie with id: \(forMovieId) deleted"))
                 }
         }
     }
