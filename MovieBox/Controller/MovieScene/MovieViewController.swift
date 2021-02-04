@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 import FirebaseAuth
 import Cosmos
+import Kingfisher
 
 class MovieViewController: UIViewController {
 
@@ -19,6 +20,7 @@ class MovieViewController: UIViewController {
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
     let adminDatabaseService = AdminDatabaseService.shared
+    let userProfileDatabaseService = UserProfileDatabaseService.shared
     
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var genreLabel: UILabel!
@@ -47,7 +49,7 @@ class MovieViewController: UIViewController {
         movieImageView.layer.cornerRadius = 10
         reviewsTableView.delegate = self
         reviewsTableView.dataSource = self
-        reviewsTableView.estimatedRowHeight = 100
+//        reviewsTableView.estimatedRowHeight = 100
         titleLabel.text = "\(movie!.title) (\(movie!.year))"
         genreLabel.text = movie!.genre
         countryLabel.text = movie!.country
@@ -57,12 +59,12 @@ class MovieViewController: UIViewController {
     }
     
     @IBAction func postReviewButtonPressed(_ sender: UIButton) {
-        let username = Auth.auth().currentUser!.displayName!
+        let user = Auth.auth().currentUser!
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         let currentDate = formatter.string(from: date)
-        reviewsDatabaseService.saveReview(text: newReviewTextField.text!, username: username, date: currentDate, movieId: movie!.id) { (result) in
+        reviewsDatabaseService.saveReview(text: newReviewTextField.text!, uid: user.uid, date: currentDate, movieId: movie!.id) { (result) in
             switch result {
             case .success(let successMessage):
                 print(successMessage)
@@ -147,18 +149,29 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reviews.count
     }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
+//
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 100
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath) as! ReviewTableViewCell
         
         let review = reviews[indexPath.row]
         
+        userProfileDatabaseService.getUserByUid(uid: review.uid) { (result) in
+            switch result {
+            case .failure(let error):
+                cell.nicknameLabel.text = "Unknown"
+                print("\(error)")
+            case .success(let user):
+                cell.nicknameLabel.text = user.username
+                if !(user.photoURL == "No photo") {
+                    cell.userPhotoImageView.kf.setImage(with: URL(string: user.photoURL))
+                }
+            }
+        }
         cell.reviewTextLabel.text = review.text
-        cell.nicknameLabel.text = review.username
         cell.dateLabel.text = review.date
         
         return cell
@@ -203,8 +216,8 @@ extension MovieViewController {
     }
     
     private func updateUserRating() {
-        let username = Auth.auth().currentUser!.displayName!
-        ratingDatabaseService.getUserRatingForCurrentMovie(movieId: movie!.id, username: username) { (result) in
+        let user = Auth.auth().currentUser!
+        ratingDatabaseService.getUserRatingForCurrentMovie(movieId: movie!.id, uid: user.uid) { (result) in
             switch result {
             case .success(let rating):
                 if (!rating.isEmpty) {
@@ -217,9 +230,9 @@ extension MovieViewController {
     }
     
     private func didTouchRating() {
-        let username = Auth.auth().currentUser!.displayName!
+        let user = Auth.auth().currentUser!
         ratingView.didTouchCosmos = { rating in
-            self.ratingDatabaseService.saveRating(movieId: self.movie!.id, value: Int(rating), username: username) { (result) in
+            self.ratingDatabaseService.saveRating(movieId: self.movie!.id, value: Int(rating), uid: user.uid) { (result) in
                 switch result {
                 case .success(let successMessage):
                     print(successMessage)

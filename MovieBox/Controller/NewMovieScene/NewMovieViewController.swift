@@ -12,6 +12,9 @@ import MultilineTextField
 
 class NewMovieViewController: UIViewController {
     
+    var videoURL: URL?
+    let databaseService = MovieDatabaseService.shared
+    
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var yearTextField: UITextField!
@@ -22,14 +25,9 @@ class NewMovieViewController: UIViewController {
     @IBOutlet weak var videoLabel: UILabel!
     @IBOutlet weak var savingActivityIndicator: UIActivityIndicatorView!
     
-    var videoURL: URL?
-    let databaseService = MovieDatabaseService.shared
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        movieImageView.layer.cornerRadius = 50
+        movieImageView.layer.cornerRadius = movieImageView.frame.size.width / 2
         movieImageView.layer.borderWidth = 0.5
         descriptionTextView.layer.borderColor = UIColor(red: 234.0/255.0, green: 198.0/255.0, blue: 207.0/255.0, alpha: 1.0).cgColor
     }
@@ -112,8 +110,11 @@ extension NewMovieViewController: UIImagePickerControllerDelegate, UINavigationC
             checkAvailabilityToSave()
         } else { return }
     }
+}
+
+extension NewMovieViewController {
     
-    func checkAvailabilityToSave() {
+    private func checkAvailabilityToSave() {
         if !titleTextField.text!.isEmpty {
             if !genreTextField.text!.isEmpty {
                 if !yearTextField.text!.isEmpty {

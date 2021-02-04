@@ -11,7 +11,9 @@
 		E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4046046259D2045005EEE0D /* ReviewTableViewCell.swift */; };
 		E4076EF3254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */; };
 		E4076EFC254C9DA200F53FA1 /* SignInVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */; };
+		E414D3B725CC675900FD7413 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E414D3B625CC675900FD7413 /* User.swift */; };
 		E41B766C25C47FA3002B8109 /* UserRatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41B766B25C47FA3002B8109 /* UserRatesViewController.swift */; };
+		E421AEC325CB547400629B0A /* UserProfileDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */; };
 		E424436C252F87AB00033508 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E424436B252F87AB00033508 /* AppDelegate.swift */; };
 		E424436E252F87AB00033508 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E424436D252F87AB00033508 /* SceneDelegate.swift */; };
 		E4244370252F87AB00033508 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E424436F252F87AB00033508 /* MainViewController.swift */; };
@@ -42,7 +44,9 @@
 		E4046046259D2045005EEE0D /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginVC+GIDSignInDelegate.swift"; sourceTree = "<group>"; };
 		E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVCExtension.swift; sourceTree = "<group>"; };
+		E414D3B625CC675900FD7413 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E41B766B25C47FA3002B8109 /* UserRatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRatesViewController.swift; sourceTree = "<group>"; };
+		E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileDatabaseService.swift; sourceTree = "<group>"; };
 		E4244368252F87AB00033508 /* MovieBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E424436B252F87AB00033508 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E424436D252F87AB00033508 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -240,6 +244,8 @@
 			children = (
 				E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */,
 				E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */,
+				E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */,
+				E414D3B625CC675900FD7413 /* User.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -406,6 +412,8 @@
 			files = (
 				E4296E82258D1A32002BA912 /* Movie.swift in Sources */,
 				E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */,
+				E421AEC325CB547400629B0A /* UserProfileDatabaseService.swift in Sources */,
+				E414D3B725CC675900FD7413 /* User.swift in Sources */,
 				E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */,
 				E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */,
 				E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */,

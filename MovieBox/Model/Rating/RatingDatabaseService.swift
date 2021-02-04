@@ -17,17 +17,18 @@ class RatingDatabaseService {
         
     }
     
-    func saveRating(movieId: String, value: Int, username: String,
+    //MARK: TODO: INSTEAD USERNAME - UID EVERYWHERE
+    func saveRating(movieId: String, value: Int, uid: String,
                    completion: @escaping (Result<String, Error>) -> Void) {
-        firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("username", isEqualTo: username)
+        firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("uid", isEqualTo: uid)
             .getDocuments { (querySnapshot, _) in
                 let ratings: [Rating] = querySnapshot!.documents.compactMap { dictionary in
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
                           let date = dictionary["date"] as? Timestamp,
-                          let username = dictionary["username"] as? String else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
+                          let uid = dictionary["uid"] as? String else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, uid: uid, date: date)
                 }
                 
                 let date = Date()
@@ -40,7 +41,7 @@ class RatingDatabaseService {
                         .setData(["id" : ratingId,
                                   "movie_id" : movieId,
                                   "value" : value,
-                                  "username" : username,
+                                  "uid" : uid,
                                   "date" : timestamp]) { (error) in
                             if let error = error {
                                 completion(.failure(error))
@@ -52,7 +53,7 @@ class RatingDatabaseService {
                         .setData(["id" : ratings[0].id,
                                   "movie_id" : movieId,
                                   "value" : value,
-                                  "username" : username,
+                                  "uid" : uid,
                                   "date" : timestamp]) { (error) in
                             if let error = error {
                                 completion(.failure(error))
@@ -63,9 +64,9 @@ class RatingDatabaseService {
         }
     }
     
-    func getUserRatingForCurrentMovie(movieId: String, username: String,
+    func getUserRatingForCurrentMovie(movieId: String, uid: String,
                                       completion: @escaping (Result<[Rating], Error>) -> Void) {
-        firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("username", isEqualTo: username)
+        firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("uid", isEqualTo: uid)
             .getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -74,9 +75,9 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
-                          let username = dictionary["username"] as? String,
+                          let uid = dictionary["uid"] as? String,
                           let date = dictionary["date"] as? Timestamp else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
+                    return Rating(id: id, movieId: movieId, value: value, uid: uid, date: date)
                 }
                 completion(.success(ratings))
             }
@@ -92,9 +93,9 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
-                          let username = dictionary["username"] as? String,
+                          let uid = dictionary["uid"] as? String,
                           let date = dictionary["date"] as? Timestamp else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
+                    return Rating(id: id, movieId: movieId, value: value, uid: uid, date: date)
                 }
                 
                 var sumOfRatings = 0.0
@@ -110,8 +111,8 @@ class RatingDatabaseService {
         }
     }
     
-    func getUserRatings(username: String, completion: @escaping (Result<[Rating], Error>) -> Void) {
-        firestore.collection("ratings").whereField("username", isEqualTo: username)
+    func getUserRatings(uid: String, completion: @escaping (Result<[Rating], Error>) -> Void) {
+        firestore.collection("ratings").whereField("uid", isEqualTo: uid)
             .getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -120,9 +121,9 @@ class RatingDatabaseService {
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let value = dictionary["value"] as? Int,
-                          let username = dictionary["username"] as? String,
+                          let uid = dictionary["uid"] as? String,
                           let date = dictionary["date"] as? Timestamp else { return nil }
-                    return Rating(id: id, movieId: movieId, value: value, username: username, date: date)
+                    return Rating(id: id, movieId: movieId, value: value, uid: uid, date: date)
                 }
                 completion(.success(ratings))
             }

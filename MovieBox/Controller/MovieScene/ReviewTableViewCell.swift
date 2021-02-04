@@ -12,10 +12,12 @@ class ReviewTableViewCell: UITableViewCell {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var reviewTextLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var userPhotoImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        userPhotoImageView.layer.cornerRadius = userPhotoImageView.frame.size.width / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

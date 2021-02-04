@@ -17,9 +17,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
-//        setContinueButton(enabled: false)
-//        continueButton.setTitle("", for: .normal)
-        activityIndicator.isHidden = false
+
         activityIndicator.startAnimating()
         
         guard
@@ -31,12 +29,8 @@ class SignUpViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             
             if let error = error {
+                self.activityIndicator.stopAnimating()
                 print(error.localizedDescription)
-                
-//                self.setContinueButton(enabled: true)
-//                self.continueButton.setTitle("Continue", for: .normal)
-//                self.activityIndicator.stopAnimating()
-                
                 return
             }
             
@@ -47,14 +41,22 @@ class SignUpViewController: UIViewController {
                     changeRequest.commitChanges(completion: { (error) in
                         if let error = error {
                             print(error.localizedDescription)
-                            
-    //                        self.setContinueButton(enabled: true)
-    //                        self.continueButton.setTitle("Continue", for: .normal)
                             self.activityIndicator.stopAnimating()
                         }
+                        let user = Auth.auth().currentUser!
+                        let userProfileDatabaseService = UserProfileDatabaseService.shared
                         
-                        print("User display name changed!")
-                        self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                        userProfileDatabaseService.saveUser(uid: user.uid, username: user.displayName!, email: user.email!, photoURL: user.photoURL?.absoluteString ?? "No photo") { (result) in
+                            switch result {
+                            case .failure(let error):
+                                self.activityIndicator.stopAnimating()
+                                print("\(error)")
+                            case .success(let successMessage):
+                                self.activityIndicator.stopAnimating()
+                                self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                                print(successMessage)
+                            }
+                        }
                     })
                 }
         }
@@ -63,15 +65,4 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

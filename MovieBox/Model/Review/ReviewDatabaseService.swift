@@ -17,13 +17,14 @@ class ReviewDatabaseService{
         
     }
     
-    func saveReview(text: String, username: String, date: String, movieId: String,
+    //MARK: TODO: INSTEAD USERNAME - UID EVERYWHERE
+    func saveReview(text: String, uid: String, date: String, movieId: String,
                    completion: @escaping (Result<String, Error>) -> Void) {
         let reviewId = "\(Int.random(in: 1...1000000))"
         firestore.collection("reviews").document(reviewId)
             .setData(["id" : reviewId,
                       "text" : text,
-                      "username" : username,
+                      "uid" : uid,
                       "date" : date,
                       "movie_id" : movieId]) { (error) in
                 if let error = error {
@@ -43,9 +44,9 @@ class ReviewDatabaseService{
                     guard let id = dictionary["id"] as? String,
                           let movieId = dictionary["movie_id"] as? String,
                           let text = dictionary["text"] as? String,
-                          let username = dictionary["username"] as? String,
+                          let uid = dictionary["uid"] as? String,
                           let date = dictionary["date"] as? String else { return nil }
-                    return Review(id: id, movieId: movieId, text: text, username: username, date: date)
+                    return Review(id: id, movieId: movieId, text: text, uid: uid, date: date)
                 }
                 
                 completion(.success(reviews))

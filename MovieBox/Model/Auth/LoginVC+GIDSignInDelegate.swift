@@ -25,6 +25,18 @@ extension LoginViewController: GIDSignInDelegate {
                 print("Failed to retrieve user data from Google with error: ", error.localizedDescription)
                 return
             }
+            
+            let user = Auth.auth().currentUser!
+            let userProfileDatabaseService = UserProfileDatabaseService.shared
+            
+            userProfileDatabaseService.saveUser(uid: user.uid, username: user.displayName!, email: user.email!, photoURL: user.photoURL?.absoluteString ?? "No photo") { (result) in
+                switch result {
+                case .failure(let error):
+                    print("\(error)")
+                case .success(let successMessage):
+                    print(successMessage)
+                }
+            }
             print("Successfully logged in Firebase with Google")
             self.openMainViewController()
         }

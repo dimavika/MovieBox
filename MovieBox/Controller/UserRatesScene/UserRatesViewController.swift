@@ -142,8 +142,8 @@ extension UserRatesViewController {
     
     private func updateRatedMovies(sortType: Bool) {
         ratedMovies.removeAll()
-        let username = Auth.auth().currentUser!.displayName!
-        ratingDatabaseService.getUserRatings(username: username) { (result) in
+        let user = Auth.auth().currentUser!
+        ratingDatabaseService.getUserRatings(uid: user.uid) { (result) in
             switch result {
             case .failure(let error):
                 print("Can't get user ratings cause: \(error)")
