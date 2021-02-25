@@ -14,6 +14,14 @@ class UserRatesViewController: UIViewController {
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
     var ratedMovies = [Movie]()
+    var moviesNew = [
+        [Movie](),
+        [Movie](),
+        [Movie](),
+        [Movie](),
+        [Movie]()
+    ]
+    let headerTitles = ["1/5", "2/5", "3/5", "4/5", "5/5"]
     
     @IBOutlet weak var ratedMoviesTableView: UITableView!
     @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
@@ -21,6 +29,10 @@ class UserRatesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tabBarController?.tabBar.shadowImage = UIImage()
+        self.tabBarController?.tabBar.backgroundImage = UIImage()
+        self.tabBarController?.tabBar.clipsToBounds = true
+        
         ratedMoviesTableView.delegate = self
         ratedMoviesTableView.dataSource = self
     }
@@ -28,25 +40,27 @@ class UserRatesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        switch sortSegmentedControl.selectedSegmentIndex {
-        case 0:
-            updateRatedMovies(sortType: true)
-        case 1:
-            updateRatedMovies(sortType: false)
-        default:
-            updateRatedMovies(sortType: true)
-        }
+        
+//        switch sortSegmentedControl.selectedSegmentIndex {
+//        case 0:
+//            updateRatedMovies(sortType: true)
+//        case 1:
+//            updateRatedMovies(sortType: false)
+//        default:
+//            updateRatedMovies(sortType: true)
+//        }
+        updateRatedMovies(sortType: true)
     }
     
     @IBAction func sortSegmControlValueChanged(_ sender: UISegmentedControl) {
-        switch sortSegmentedControl.selectedSegmentIndex {
-        case 0:
-            updateRatedMovies(sortType: true)
-        case 1:
-            updateRatedMovies(sortType: false)
-        default:
-            updateRatedMovies(sortType: true)
-        }
+//        switch sortSegmentedControl.selectedSegmentIndex {
+//        case 0:
+//            updateRatedMovies(sortType: true)
+//        case 1:
+//            updateRatedMovies(sortType: false)
+//        default:
+//            updateRatedMovies(sortType: true)
+//        }
     }
     
     /*
@@ -65,11 +79,16 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 5
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ratedMovies.count
+//        return ratedMovies.count
+        return moviesNew[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return headerTitles[section]
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -93,10 +112,12 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-        let movie = ratedMovies[indexPath.row]
+//        let movie = ratedMovies[indexPath.row]
+        let movie = moviesNew[indexPath.section][indexPath.row]
         
-        cell.titleLabel.text = "\(movie.title) (\(movie.year))"
+        cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
+        cell.yearLabel.text = movie.year
         cell.countryLabel.text = movie.country
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
             switch result {
@@ -139,21 +160,24 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension UserRatesViewController {
-    
+    //MARK: TODO SMTH WRONG!
     private func updateRatedMovies(sortType: Bool) {
         ratedMovies.removeAll()
+        for i in 0...4 {
+            moviesNew[i].removeAll()
+        }
         let user = Auth.auth().currentUser!
         ratingDatabaseService.getUserRatings(uid: user.uid) { (result) in
             switch result {
             case .failure(let error):
                 print("Can't get user ratings cause: \(error)")
-            case .success(var ratings):
-                if !ratings.isEmpty {
-                    if sortType {
-                        ratings.sort(by: { $0.value < $1.value })
-                    } else {
-                        ratings.sort(by: { $0.date.seconds < $1.date.seconds})
-                    }
+            case .success(let ratings):
+//                if !ratings.isEmpty {
+//                    if sortType {
+//                        ratings.sort(by: { $0.value < $1.value })
+//                    } else {
+//                        ratings.sort(by: { $0.date.seconds < $1.date.seconds})
+//                    }
                     
                     for rating in ratings {
                         self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
@@ -161,12 +185,18 @@ extension UserRatesViewController {
                             case .failure(let error):
                                 print("\(error)")
                             case.success(let movie):
-                                self.ratedMovies.append(movie)
-                                self.ratedMoviesTableView.reloadData()
+                                for rating in ratings {
+                                    if movie.id == rating.movieId {
+                                        self.moviesNew[rating.value - 1].append(movie)
+                                        self.ratedMoviesTableView.reloadData()
+                                    }
+                                }
+//                                self.ratedMovies.append(movie)
+                                
                             }
                         }
                     }
-                }
+//                }
             }
         }
     }

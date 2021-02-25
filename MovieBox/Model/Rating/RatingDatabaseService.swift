@@ -19,7 +19,7 @@ class RatingDatabaseService {
     
     //MARK: TODO: INSTEAD USERNAME - UID EVERYWHERE
     func saveRating(movieId: String, value: Int, uid: String,
-                   completion: @escaping (Result<String, Error>) -> Void) {
+                    completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("uid", isEqualTo: uid)
             .getDocuments { (querySnapshot, _) in
                 let ratings: [Rating] = querySnapshot!.documents.compactMap { dictionary in
@@ -36,7 +36,7 @@ class RatingDatabaseService {
                 
                 //Checking if user rating is already exist
                 if ratings.isEmpty {
-                    let ratingId = "\(Int.random(in: 1...1000000))"
+                    let ratingId = UUID().uuidString
                     self.firestore.collection("ratings").document(ratingId)
                         .setData(["id" : ratingId,
                                   "movie_id" : movieId,
@@ -61,7 +61,7 @@ class RatingDatabaseService {
                             completion(.success("Saving rating is done!"))
                         }
                 }
-        }
+            }
     }
     
     func getUserRatingForCurrentMovie(movieId: String, uid: String,
@@ -141,6 +141,27 @@ class RatingDatabaseService {
                     }
                     completion(.success("All ratings for movie with id: \(forMovieId) deleted"))
                 }
+        }
+    }
+    
+    func getAllRatingsByLastMonth(completion: @escaping (Result<[Rating], Error>) -> Void) {
+        let currentDate = Date()
+        let dateOneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: currentDate)!
+        let timestamp = Timestamp(date: dateOneMonthAgo)
+        firestore.collection("ratings").whereField("date", isGreaterThan: timestamp).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                let ratings: [Rating] = querySnapshot!.documents.compactMap { dictionary in
+                    guard let id = dictionary["id"] as? String,
+                          let movieId = dictionary["movie_id"] as? String,
+                          let value = dictionary["value"] as? Int,
+                          let uid = dictionary["uid"] as? String,
+                          let date = dictionary["date"] as? Timestamp else { return nil }
+                    return Rating(id: id, movieId: movieId, value: value, uid: uid, date: date)
+                }
+                completion(.success(ratings))
+            }
         }
     }
 }

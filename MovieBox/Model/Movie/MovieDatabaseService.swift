@@ -22,7 +22,10 @@ class MovieDatabaseService {
     
     func saveMovie(title: String, genre: String, year: String, country: String, slogan: String, description: String, image: UIImage, videoURL: URL,
                    completion: @escaping (Result<String, Error>) -> Void) {
-        let movieId = "\(Int.random(in: 1...1000000))"
+        let movieId = UUID().uuidString
+        let date = Date()
+        let timestamp = Timestamp(date: date)
+        
         uploadImage(imageId: movieId, image: image) { (myresult) in
             switch myresult {
             case .success(let url):
@@ -40,7 +43,8 @@ class MovieDatabaseService {
                                       "slogan" : slogan,
                                       "description" : description,
                                       "image_url" : imageUrl,
-                                      "video_url" : videoDownloadURL]) { (error) in
+                                      "video_url" : videoDownloadURL,
+                                      "date" : timestamp]) { (error) in
                                 if let error = error {
                                     completion(.failure(error))
                                 }
@@ -130,9 +134,10 @@ class MovieDatabaseService {
                           let slogan = dictionary["slogan"] as? String,
                           let description = dictionary["description"] as? String,
                           let imageUrl = dictionary["image_url"] as? String,
-                          let videoUrl = dictionary["video_url"] as? String else { return nil }
+                          let videoUrl = dictionary["video_url"] as? String,
+                          let date = dictionary["date"] as? Timestamp else { return nil }
                     return Movie(id: id, title: title, genre: genre, year: year, country: country, slogan: slogan, description: description, imageUrl: imageUrl,
-                                 videoUrl: videoUrl)
+                                 videoUrl: videoUrl, date: date)
                 }
                 
                 completion(.success(movies))
@@ -154,9 +159,10 @@ class MovieDatabaseService {
                       let slogan = dictionary["slogan"] as? String,
                       let description = dictionary["description"] as? String,
                       let imageUrl = dictionary["image_url"] as? String,
-                      let videoUrl = dictionary["video_url"] as? String else { return nil }
+                      let videoUrl = dictionary["video_url"] as? String,
+                      let date = dictionary["date"] as? Timestamp else { return nil }
                 return Movie(id: id, title: title, genre: genre, year: year, country: country, slogan: slogan, description: description, imageUrl: imageUrl,
-                             videoUrl: videoUrl)
+                             videoUrl: videoUrl, date: date)
             }
             completion(.success(movie!!))
         }

@@ -20,7 +20,7 @@ class ReviewDatabaseService{
     //MARK: TODO: INSTEAD USERNAME - UID EVERYWHERE
     func saveReview(text: String, uid: String, date: String, movieId: String,
                    completion: @escaping (Result<String, Error>) -> Void) {
-        let reviewId = "\(Int.random(in: 1...1000000))"
+        let reviewId = UUID().uuidString
         firestore.collection("reviews").document(reviewId)
             .setData(["id" : reviewId,
                       "text" : text,

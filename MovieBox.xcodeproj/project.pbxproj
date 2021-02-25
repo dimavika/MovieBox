@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		A8F7A48A7BE26175AE30E9CE /* Pods_MovieBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6211E404E80E2E0EF7F58BDE /* Pods_MovieBox.framework */; };
 		E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4046046259D2045005EEE0D /* ReviewTableViewCell.swift */; };
-		E4076EF3254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */; };
 		E4076EFC254C9DA200F53FA1 /* SignInVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */; };
 		E414D3B725CC675900FD7413 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E414D3B625CC675900FD7413 /* User.swift */; };
+		E4195ABA25D71C6600BD00FB /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4195AB925D71C6600BD00FB /* Label.swift */; };
 		E41B766C25C47FA3002B8109 /* UserRatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41B766B25C47FA3002B8109 /* UserRatesViewController.swift */; };
 		E421AEC325CB547400629B0A /* UserProfileDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */; };
 		E424436C252F87AB00033508 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E424436B252F87AB00033508 /* AppDelegate.swift */; };
@@ -28,10 +28,17 @@
 		E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A817F2559913500476E1B /* NewMovieViewController.swift */; };
 		E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C11552539EE3D006CE5CC /* LoginViewController.swift */; };
 		E44B11B3257C3AF90037F497 /* MovieDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B11B2257C3AF90037F497 /* MovieDatabaseService.swift */; };
+		E44B60AE25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */; };
+		E44B60B225DB260E007D1499 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */; };
 		E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E594C2540C779006BA108 /* UserProfileViewController.swift */; };
+		E45CA7C325D457AB00F30417 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45CA7C225D457AB00F30417 /* UIButtonExtension.swift */; };
 		E46E48B725C20D7600546CA6 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E48B625C20D7600546CA6 /* MoviesViewController.swift */; };
 		E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */; };
 		E4714DF1259D2D6200991A78 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4714DF0259D2D6200991A78 /* Review.swift */; };
+		E471F1D125D5974A00A92F61 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1D025D5974A00A92F61 /* UITextFieldExtension.swift */; };
+		E471F1D425D59DA800A92F61 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1D325D59DA800A92F61 /* UIViewControllerExtension.swift */; };
+		E471F1D725D5ACFC00A92F61 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1D625D5ACFC00A92F61 /* TextField.swift */; };
+		E471F1DB25D5D85A00A92F61 /* SignUpVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1DA25D5D85A00A92F61 /* SignUpVCExtension.swift */; };
 		E4904F7325A1343800BF053E /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7225A1343800BF053E /* Rating.swift */; };
 		E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7525A134E900BF053E /* RatingDatabaseService.swift */; };
 		E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2B2B2259672540097714B /* MovieViewController.swift */; };
@@ -42,9 +49,9 @@
 		5B3F61A8D90EE4B24C3636AB /* Pods-MovieBox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieBox.debug.xcconfig"; path = "Target Support Files/Pods-MovieBox/Pods-MovieBox.debug.xcconfig"; sourceTree = "<group>"; };
 		6211E404E80E2E0EF7F58BDE /* Pods_MovieBox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieBox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4046046259D2045005EEE0D /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
-		E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginVC+GIDSignInDelegate.swift"; sourceTree = "<group>"; };
 		E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVCExtension.swift; sourceTree = "<group>"; };
 		E414D3B625CC675900FD7413 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E4195AB925D71C6600BD00FB /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		E41B766B25C47FA3002B8109 /* UserRatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRatesViewController.swift; sourceTree = "<group>"; };
 		E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileDatabaseService.swift; sourceTree = "<group>"; };
 		E4244368252F87AB00033508 /* MovieBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,10 +70,17 @@
 		E43A817F2559913500476E1B /* NewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMovieViewController.swift; sourceTree = "<group>"; };
 		E43C11552539EE3D006CE5CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E44B11B2257C3AF90037F497 /* MovieDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDatabaseService.swift; sourceTree = "<group>"; };
+		E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
+		E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		E44E594C2540C779006BA108 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E45CA7C225D457AB00F30417 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		E46E48B625C20D7600546CA6 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDatabaseService.swift; sourceTree = "<group>"; };
 		E4714DF0259D2D6200991A78 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		E471F1D025D5974A00A92F61 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
+		E471F1D325D59DA800A92F61 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		E471F1D625D5ACFC00A92F61 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		E471F1DA25D5D85A00A92F61 /* SignUpVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCExtension.swift; sourceTree = "<group>"; };
 		E4904F7225A1343800BF053E /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		E4904F7525A134E900BF053E /* RatingDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingDatabaseService.swift; sourceTree = "<group>"; };
 		E4A2B2B2259672540097714B /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
@@ -123,7 +137,6 @@
 		E404604C259D20E5005EEE0D /* MoviesScene */ = {
 			isa = PBXGroup;
 			children = (
-				E43A815F2559775E00476E1B /* MovieTableViewCell.swift */,
 				E46E48B625C20D7600546CA6 /* MoviesViewController.swift */,
 			);
 			path = MoviesScene;
@@ -222,6 +235,7 @@
 		E4244382252F89D100033508 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E45CA7C125D4579300F30417 /* Controls */,
 				E470073A25BB7DF500EB45BE /* Movie */,
 				E427981C25B275B700875060 /* Admin */,
 				E4904F7125A1342700BF053E /* Rating */,
@@ -242,12 +256,27 @@
 		E44E59552540D454006BA108 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				E4076EF2254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift */,
 				E4076EFB254C9DA200F53FA1 /* SignInVCExtension.swift */,
 				E421AEC225CB547400629B0A /* UserProfileDatabaseService.swift */,
 				E414D3B625CC675900FD7413 /* User.swift */,
+				E471F1DA25D5D85A00A92F61 /* SignUpVCExtension.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		E45CA7C125D4579300F30417 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				E45CA7C225D457AB00F30417 /* UIButtonExtension.swift */,
+				E471F1D025D5974A00A92F61 /* UITextFieldExtension.swift */,
+				E471F1D325D59DA800A92F61 /* UIViewControllerExtension.swift */,
+				E471F1D625D5ACFC00A92F61 /* TextField.swift */,
+				E4195AB925D71C6600BD00FB /* Label.swift */,
+				E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */,
+				E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */,
+				E43A815F2559775E00476E1B /* MovieTableViewCell.swift */,
+			);
+			path = Controls;
 			sourceTree = "<group>";
 		};
 		E470073A25BB7DF500EB45BE /* Movie */ = {
@@ -413,14 +442,20 @@
 				E4296E82258D1A32002BA912 /* Movie.swift in Sources */,
 				E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */,
 				E421AEC325CB547400629B0A /* UserProfileDatabaseService.swift in Sources */,
+				E471F1D725D5ACFC00A92F61 /* TextField.swift in Sources */,
 				E414D3B725CC675900FD7413 /* User.swift in Sources */,
 				E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */,
 				E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */,
 				E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */,
+				E471F1D125D5974A00A92F61 /* UITextFieldExtension.swift in Sources */,
 				E4244370252F87AB00033508 /* MainViewController.swift in Sources */,
 				E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */,
 				E4076EFC254C9DA200F53FA1 /* SignInVCExtension.swift in Sources */,
+				E471F1D425D59DA800A92F61 /* UIViewControllerExtension.swift in Sources */,
 				E424436C252F87AB00033508 /* AppDelegate.swift in Sources */,
+				E471F1DB25D5D85A00A92F61 /* SignUpVCExtension.swift in Sources */,
+				E44B60AE25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift in Sources */,
+				E4195ABA25D71C6600BD00FB /* Label.swift in Sources */,
 				E41B766C25C47FA3002B8109 /* UserRatesViewController.swift in Sources */,
 				E4244385252F8AF200033508 /* SignUpViewController.swift in Sources */,
 				E4244389252F8B9000033508 /* SignInViewController.swift in Sources */,
@@ -428,9 +463,10 @@
 				E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */,
 				E4904F7325A1343800BF053E /* Rating.swift in Sources */,
 				E4714DF1259D2D6200991A78 /* Review.swift in Sources */,
-				E4076EF3254C649D00F53FA1 /* LoginVC+GIDSignInDelegate.swift in Sources */,
 				E44B11B3257C3AF90037F497 /* MovieDatabaseService.swift in Sources */,
 				E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */,
+				E45CA7C325D457AB00F30417 /* UIButtonExtension.swift in Sources */,
+				E44B60B225DB260E007D1499 /* MoviesCollectionView.swift in Sources */,
 				E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */,
 				E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */,
 				E424436E252F87AB00033508 /* SceneDelegate.swift in Sources */,

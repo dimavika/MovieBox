@@ -11,11 +11,20 @@ import Kingfisher
 
 class UserProfileViewController: UIViewController {
     
+    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
+    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
+    private let photoButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
+    
     let userProfileDatabaseService = UserProfileDatabaseService.shared
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var editUsernameButton: UIButton!
+    @IBOutlet weak var photoButton: UIButton!
+    @IBOutlet weak var signOutButton: UIButton!
+    @IBOutlet weak var changePasswordButton: UIButton!
+    @IBOutlet weak var deleteAccountButton: UIButton!
+    
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var usernameTextField: TextField!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -23,8 +32,63 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.tabBarController?.tabBar.shadowImage = UIImage()
+        self.tabBarController?.tabBar.backgroundImage = UIImage()
+        self.tabBarController?.tabBar.clipsToBounds = true
+        
+        photoButton.configure(color: UIColor(.white),
+                                         font: UIFont.boldSystemFont(ofSize: 15),
+                                         cornerRadius: photoButton.bounds.height / 2,
+                                         borderColor: photoButtonColor,
+                                         backgroundColor: photoButtonColor,
+                                         borderWidth: 1.0)
+        editUsernameButton.configure(color: UIColor(.white),
+                                         font: UIFont.boldSystemFont(ofSize: 15),
+                                         cornerRadius: editUsernameButton.bounds.height / 2,
+                                         borderColor: photoButtonColor,
+                                         backgroundColor: photoButtonColor,
+                                         borderWidth: 1.0)
+        submitButton.configure(color: UIColor(.white),
+                                         font: UIFont.boldSystemFont(ofSize: 15),
+                                         cornerRadius: submitButton.bounds.height / 2,
+                                         borderColor: photoButtonColor,
+                                         backgroundColor: photoButtonColor,
+                                         borderWidth: 1.0)
+        changePasswordButton.configure(color: UIColor(.white),
+                                         font: UIFont.boldSystemFont(ofSize: 15),
+                                         cornerRadius: changePasswordButton.bounds.height / 2,
+                                         borderColor: tintColor,
+                                         backgroundColor: tintColor,
+                                         borderWidth: 1.0)
+        deleteAccountButton.configure(color: UIColor(.white),
+                                         font: UIFont.boldSystemFont(ofSize: 15),
+                                         cornerRadius: deleteAccountButton.bounds.height / 2,
+                                         borderColor: tintColor,
+                                         backgroundColor: tintColor,
+                                         borderWidth: 1.0)
+        signOutButton.configure(color: UIColor(.black),
+                                         font: UIFont.boldSystemFont(ofSize: 18),
+                                         cornerRadius: signOutButton.bounds.height / 2,
+                                         borderColor: borderColor,
+                                         backgroundColor: .white,
+                                         borderWidth: 1.0)
+        
+        usernameTextField.configure(color: UIColor(.black),
+                                         font: UIFont.systemFont(ofSize: 16),
+                                         cornerRadius: usernameTextField.bounds.height / 2,
+                                         borderColor: borderColor,
+                                         backgroundColor: UIColor(.white),
+                                         borderWidth: 1.0)
+        usernameTextField.clipsToBounds = true
+        
+        userNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        emailLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        
         userProfileImageView.layer.cornerRadius = userProfileImageView.frame.size.width / 2
-        userProfileImageView.layer.borderWidth = 0.5
+        
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +118,7 @@ class UserProfileViewController: UIViewController {
     @IBAction func editUserNameButtonPressed(_ sender: UIButton) {
         if editUsernameButton.currentTitle! == "Edit" {
             editUsernameButton.setTitle("Cancel", for: .normal)
+            usernameTextField.text = userNameLabel.text
             usernameTextField.isHidden = false
             submitButton.isHidden = false
         } else {
@@ -79,7 +144,7 @@ class UserProfileViewController: UIViewController {
         submitButton.isHidden = true
     }
     
-    @IBAction func usernameTextFieldDidChange(_ sender: UITextField) {
+    @IBAction func usernameTextFieldDidChange(_ sender: TextField) {
         if !usernameTextField.text!.isEmpty {
             submitButton.isEnabled = true
         } else {
@@ -179,7 +244,7 @@ extension UserProfileViewController {
                 print("\(error)")
             } else {
                 let alert = UIAlertController(title: "Password Reset", message: "Email with link to reset your password was sent to your email: \(user.email!)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Got it!", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }

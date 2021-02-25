@@ -10,11 +10,67 @@ import Firebase
 
 class SignUpViewController: UIViewController {
 
-    @IBOutlet weak var userNameTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var confirmPasswordTextField: UITextField!
+    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
+    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
+    private let signUpButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var usernameTextField: TextField!
+    @IBOutlet weak var emailTextField: TextField!
+    @IBOutlet weak var passwordTextField: TextField!
+    @IBOutlet weak var confirmPasswordTextField: TextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        backButton.tintColor = tintColor
+        
+        titleLabel.textColor = tintColor
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        
+        usernameTextField.configure(color: UIColor(.black),
+                                 font: UIFont.systemFont(ofSize: 16),
+                                 cornerRadius: 55/2,
+                                 borderColor: borderColor,
+                                 backgroundColor: UIColor(.white),
+                                 borderWidth: 1.0)
+        usernameTextField.clipsToBounds = true
+        emailTextField.configure(color: UIColor(.black),
+                                 font: UIFont.systemFont(ofSize: 16),
+                                 cornerRadius: 55/2,
+                                 borderColor: borderColor,
+                                 backgroundColor: UIColor(.white),
+                                 borderWidth: 1.0)
+        emailTextField.clipsToBounds = true
+        passwordTextField.configure(color: UIColor(.black),
+                                 font: UIFont.systemFont(ofSize: 16),
+                                 cornerRadius: 55/2,
+                                 borderColor: borderColor,
+                                 backgroundColor: UIColor(.white),
+                                 borderWidth: 1.0)
+        passwordTextField.clearsOnBeginEditing = false
+        passwordTextField.clipsToBounds = true
+        confirmPasswordTextField.configure(color: UIColor(.black),
+                                 font: UIFont.systemFont(ofSize: 16),
+                                 cornerRadius: 55/2,
+                                 borderColor: borderColor,
+                                 backgroundColor: UIColor(.white),
+                                 borderWidth: 1.0)
+        confirmPasswordTextField.clearsOnBeginEditing = false
+        confirmPasswordTextField.clipsToBounds = true
+        
+        signUpButton.configure(color: UIColor(.white),
+                               font: UIFont.boldSystemFont(ofSize: 20),
+                               cornerRadius: 55/2,
+                               borderColor: borderColor,
+                               backgroundColor: signUpButtonColor,
+                               borderWidth: 1.0)
+        
+        self.hideKeyboardWhenTappedAround()
+    }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
 
@@ -23,46 +79,27 @@ class SignUpViewController: UIViewController {
         guard
             let email = emailTextField.text,
             let password = passwordTextField.text,
-            let userName = userNameTextField.text
-        else { return }
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            
-            if let error = error {
-                self.activityIndicator.stopAnimating()
-                print(error.localizedDescription)
+            let username = usernameTextField.text,
+            let confirmedPassword = confirmPasswordTextField.text,
+            email != "",
+            password != "",
+            username != "",
+            confirmedPassword != "",
+            password == confirmedPassword
+        else {  activityIndicator.stopAnimating()
+                let alert = UIAlertController(title: "Incorrect account data",
+                                              message: "Check if you entered all the account data or the email and password confirmation are entered correctly.",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 return
-            }
-            
-            print("Successfully logged into Firebase with User Email")
-            
-            if let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest() {
-                    changeRequest.displayName = userName
-                    changeRequest.commitChanges(completion: { (error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                            self.activityIndicator.stopAnimating()
-                        }
-                        let user = Auth.auth().currentUser!
-                        let userProfileDatabaseService = UserProfileDatabaseService.shared
-                        
-                        userProfileDatabaseService.saveUser(uid: user.uid, username: user.displayName!, email: user.email!, photoURL: user.photoURL?.absoluteString ?? "No photo") { (result) in
-                            switch result {
-                            case .failure(let error):
-                                self.activityIndicator.stopAnimating()
-                                print("\(error)")
-                            case .success(let successMessage):
-                                self.activityIndicator.stopAnimating()
-                                self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-                                print(successMessage)
-                            }
-                        }
-                    })
-                }
         }
+        
+        createAccount(username: username, email: email, password: password)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        self.presentingViewController?.dismiss(animated: true)
     }
+    
 }

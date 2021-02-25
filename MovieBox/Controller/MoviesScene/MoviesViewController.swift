@@ -10,23 +10,50 @@ import FirebaseAuth
 
 class MoviesViewController: UIViewController {
 
+    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
+    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
+    
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
     let adminDatabaseService = AdminDatabaseService.shared
     var movies = [Movie]()
+    var mostRecentMovies = [Movie]()
     var searchedMovies = [Movie]()
     var searching = false
     
+    @IBOutlet var addBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var moviesTableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var titleLabel: Label!
+    @IBOutlet weak var searchTextField: TextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         moviesTableView.delegate = self
         moviesTableView.dataSource = self
-        searchBar.delegate = self
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.tabBarController?.tabBar.shadowImage = UIImage()
+        self.tabBarController?.tabBar.backgroundImage = UIImage()
+        self.tabBarController?.tabBar.clipsToBounds = true
+        self.navigationItem.backButtonTitle = "Movies"
+        
+        addBarButtonItem.tintColor = tintColor
+        
+        titleLabel.textColor = tintColor
+        titleLabel.font = UIFont.systemFont(ofSize: 17)
+        
+        searchTextField.configure(color: .black,
+                                  font: UIFont.systemFont(ofSize: 16),
+                                  cornerRadius: searchTextField.bounds.height / 2,
+                                  borderColor: borderColor,
+                                  backgroundColor: .white,
+                                  borderWidth: 1.0)
+        searchTextField.clipsToBounds = true
+        
+        self.hideKeyboardWhenTappedAround()
         updateMovies()
     }
     
@@ -36,21 +63,45 @@ class MoviesViewController: UIViewController {
         checkAvailabilityOfAddButton()
         updateMovies()
     }
+    
+    @IBAction func searchTextFieldDidChange(_ sender: TextField) {
+        titleLabel.isHidden = true
+        searchedMovies.removeAll()
+        if searchTextField.text?.count != 0 {
+            for movie in movies {
+                if movie.title.lowercased().starts(with: searchTextField.text!.lowercased()) {
+                    searchedMovies.append(movie)
+                }
+            }
+            searching = true
+        } else {
+            titleLabel.isHidden = false
+            searching = false
+        }
+        
+        moviesTableView.reloadData()
+    }
+
 }
 
 extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searching ? searchedMovies.count : movies.count
+        return searching ? searchedMovies.count : mostRecentMovies.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedMovie = movies[indexPath.row]
+        var selectedMovie: Movie
+        if searching {
+            selectedMovie = searchedMovies[indexPath.row]
+        } else {
+            selectedMovie = mostRecentMovies[indexPath.row]
+        }
+        
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
             if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
                 viewController.movie = selectedMovie
@@ -74,10 +125,11 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
         if searching {
             movie = searchedMovies[indexPath.row]
         } else {
-            movie = movies[indexPath.row]
+            movie = mostRecentMovies[indexPath.row]
         }
         
-        cell.titleLabel.text = "\(movie.title) (\(movie.year))"
+        cell.titleLabel.text = movie.title
+        cell.yearLabel.text = movie.year
         cell.genreLabel.text = movie.genre
         cell.countryLabel.text = movie.country
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
@@ -120,43 +172,6 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MoviesViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedMovies.removeAll()
-        for movie in movies {
-            if movie.title.lowercased().starts(with: searchText.lowercased()) {
-                searchedMovies.append(movie)
-            }
-        }
-        searching = true
-        moviesTableView.reloadData()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searching = false
-        moviesTableView.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        if searching {
-            if selectedScope == 0 {
-                
-            } else {
-                searchedMovies.sort(by: {Int($0.year)! > Int($1.year)!})
-            }
-        } else {
-            if selectedScope == 0 {
-                
-            } else {
-                movies.sort(by: {Int($0.year)! > Int($1.year)!})
-            }
-        }
-        moviesTableView.reloadData()
-    }
-}
-
 extension MoviesViewController {
     
     private func updateMovies() {
@@ -164,6 +179,8 @@ extension MoviesViewController {
             switch result {
             case .success(let movies):
                 self.movies = movies
+                self.movies.sort(by: { $0.date.seconds > $1.date.seconds})
+                self.mostRecentMovies = Array(self.movies.prefix(2))
                 self.moviesTableView.reloadData()
             case .failure(let error):
                 print("Cannot get movies cause: \(error)")
@@ -180,8 +197,17 @@ extension MoviesViewController {
             case .success(let isAdmin):
                 if !isAdmin {
                     self.navigationItem.setRightBarButton(nil, animated: false)
+                } else {
+                    self.navigationItem.setRightBarButton(self.addBarButtonItem, animated: true)
                 }
             }
+        }
+    }
+    
+    override func dismissKeyboard() {
+        view.endEditing(true)
+        if searchTextField.text?.count == 0{
+            titleLabel.isHidden = false
         }
     }
 }

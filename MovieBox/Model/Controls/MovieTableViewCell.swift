@@ -10,6 +10,7 @@ import UIKit
 class MovieTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var ratingCountLabel: UILabel!
@@ -19,8 +20,20 @@ class MovieTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        titleLabel.textColor = .black
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        yearLabel.textColor = .black
+        yearLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        genreLabel.textColor = .gray
+        genreLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        ratingLabel.textColor = .black
+        ratingLabel.font = UIFont.boldSystemFont(ofSize: 19)
+        ratingCountLabel.textColor = .gray
+        ratingCountLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        countryLabel.textColor = .black
+        countryLabel.font = UIFont.boldSystemFont(ofSize: 17)
         movieImageView.layer.cornerRadius = 10
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -9,7 +9,10 @@ import UIKit
 
 class ReviewTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nicknameLabel: UILabel!
+    private let usernameColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
+    
+
+    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var reviewTextLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var userPhotoImageView: UIImageView!
@@ -18,6 +21,13 @@ class ReviewTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         userPhotoImageView.layer.cornerRadius = userPhotoImageView.frame.size.width / 2
+        
+        usernameLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
+        usernameLabel.textColor = usernameColor
+        reviewTextLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
+        reviewTextLabel.numberOfLines = 0
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 15.0)
+        dateLabel.textColor = .gray
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
