@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main View Controller-->
+        <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="MovieBox" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Popular in this month:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEC-Xg-WLP">
-                                <rect key="frame" x="20" y="128" width="165.33333333333334" height="21"/>
+                                <rect key="frame" x="20" y="103" width="165.33333333333334" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -35,10 +35,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="sEC-Xg-WLP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SNb-Dv-Wyl"/>
-                            <constraint firstItem="sEC-Xg-WLP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="mNM-rI-eqA"/>
+                            <constraint firstItem="sEC-Xg-WLP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="mNM-rI-eqA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="09E-nR-kAV"/>
+                    <navigationItem key="navigationItem" title="Home" id="09E-nR-kAV"/>
                     <connections>
                         <outlet property="titleLabel" destination="sEC-Xg-WLP" id="EcU-ch-ifc"/>
                     </connections>
@@ -47,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="2678" y="672"/>
         </scene>
-        <!--Movies View Controller-->
+        <!--Movies-->
         <scene sceneID="XFu-Fb-6kQ">
             <objects>
                 <viewController id="KdX-8F-gaL" customClass="MoviesViewController" customModule="MovieBox" customModuleProvider="target" sceneMemberID="viewController">
@@ -209,7 +209,7 @@
                             <constraint firstItem="g6P-V4-Q0p" firstAttribute="top" secondItem="lcD-ay-LYt" secondAttribute="bottom" constant="5" id="uJ5-UL-Fwe"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="aja-l6-ekE">
+                    <navigationItem key="navigationItem" title="Movies" id="aja-l6-ekE">
                         <barButtonItem key="rightBarButtonItem" image="icons8-plus-24" style="plain" id="2Uz-4s-95a">
                             <connections>
                                 <segue destination="IOv-av-Tlx" kind="show" id="9CE-0U-Sdw"/>
@@ -370,7 +370,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="MGR-yt-Cuk" firstAttribute="bottom" secondItem="FIT-5a-dpQ" secondAttribute="bottom" id="4HT-bX-2TG"/>
-                            <constraint firstItem="FIT-5a-dpQ" firstAttribute="height" secondItem="THW-X1-SoH" secondAttribute="height" multiplier="0.789409" id="Cc3-1f-Nur"/>
                             <constraint firstItem="FIT-5a-dpQ" firstAttribute="top" secondItem="MGR-yt-Cuk" secondAttribute="top" id="Lp5-Ow-WbG"/>
                             <constraint firstItem="FIT-5a-dpQ" firstAttribute="width" secondItem="THW-X1-SoH" secondAttribute="width" id="Qxb-jY-jaq"/>
                             <constraint firstItem="FIT-5a-dpQ" firstAttribute="leading" secondItem="MGR-yt-Cuk" secondAttribute="leading" id="bMM-9Q-N91"/>
@@ -732,11 +731,11 @@
             </objects>
             <point key="canvasLocation" x="624.63768115942037" y="1203.3482142857142"/>
         </scene>
-        <!--Home-->
+        <!--Navigation Controller-->
         <scene sceneID="47F-fD-mue">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lId-MP-Rw5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="2Kp-fd-W4i"/>
+                    <tabBarItem key="tabBarItem" title="" image="house.fill" catalog="system" id="2Kp-fd-W4i"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jnc-tG-zRV">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -752,7 +751,7 @@
             </objects>
             <point key="canvasLocation" x="1726" y="673"/>
         </scene>
-        <!--User Rates View Controller-->
+        <!--My Rates-->
         <scene sceneID="nDh-b8-2Yl">
             <objects>
                 <viewController id="7Xe-eg-B5g" customClass="UserRatesViewController" customModule="MovieBox" customModuleProvider="target" sceneMemberID="viewController">
@@ -760,13 +759,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SpO-eW-PWE">
-                                <rect key="frame" x="0.0" y="129" width="375" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="SpO-eW-PWE">
+                                <rect key="frame" x="0.0" y="98" width="375" height="631"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="movieCell" rowHeight="156" id="cDP-x8-ItJ" customClass="MovieTableViewCell" customModule="MovieBox" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="156"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="156"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cDP-x8-ItJ" id="asj-Xz-MAX">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
@@ -875,40 +874,26 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eme-Fy-uT3">
-                                <rect key="frame" x="10" y="93" width="355" height="32"/>
-                                <segments>
-                                    <segment title="Rating"/>
-                                    <segment title="Date"/>
-                                </segments>
-                                <connections>
-                                    <action selector="sortSegmControlValueChanged:" destination="7Xe-eg-B5g" eventType="valueChanged" id="VUY-na-z2v"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="yYN-LW-Ied"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="eme-Fy-uT3" firstAttribute="leading" secondItem="yYN-LW-Ied" secondAttribute="leading" constant="10" id="JLB-IM-kIt"/>
                             <constraint firstItem="yYN-LW-Ied" firstAttribute="bottom" secondItem="SpO-eW-PWE" secondAttribute="bottom" id="Q1x-34-zak"/>
                             <constraint firstItem="SpO-eW-PWE" firstAttribute="leading" secondItem="yYN-LW-Ied" secondAttribute="leading" id="YPJ-9u-eba"/>
                             <constraint firstItem="SpO-eW-PWE" firstAttribute="trailing" secondItem="yYN-LW-Ied" secondAttribute="trailing" id="bWV-dW-MHA"/>
-                            <constraint firstItem="SpO-eW-PWE" firstAttribute="top" secondItem="eme-Fy-uT3" secondAttribute="bottom" constant="5" id="mak-7a-04V"/>
-                            <constraint firstItem="eme-Fy-uT3" firstAttribute="top" secondItem="yYN-LW-Ied" secondAttribute="top" constant="5" id="u0S-vP-d2h"/>
-                            <constraint firstItem="yYN-LW-Ied" firstAttribute="trailing" secondItem="eme-Fy-uT3" secondAttribute="trailing" constant="10" id="znw-Jr-l2n"/>
+                            <constraint firstItem="SpO-eW-PWE" firstAttribute="top" secondItem="yYN-LW-Ied" secondAttribute="top" constant="10" id="pwg-Vr-DxG"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="FKa-Rv-eBU"/>
+                    <navigationItem key="navigationItem" title="My Rates" id="FKa-Rv-eBU"/>
                     <connections>
                         <outlet property="ratedMoviesTableView" destination="SpO-eW-PWE" id="TQI-WG-Jy6"/>
-                        <outlet property="sortSegmentedControl" destination="eme-Fy-uT3" id="F6K-qV-QG7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QXk-ks-aCt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2500" y="1925.615763546798"/>
         </scene>
-        <!--User Profile View Controller-->
+        <!--Profile-->
         <scene sceneID="xG7-XR-dWe">
             <objects>
                 <viewController id="Bg3-Zz-15A" customClass="UserProfileViewController" customModule="MovieBox" customModuleProvider="target" sceneMemberID="viewController">
@@ -1047,7 +1032,7 @@
                             <constraint firstItem="N62-LZ-wqc" firstAttribute="top" secondItem="cSM-He-NFe" secondAttribute="bottom" constant="15" id="ree-xs-i0u"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="7Tw-75-f35"/>
+                    <navigationItem key="navigationItem" title="Profile" id="7Tw-75-f35"/>
                     <connections>
                         <outlet property="activityIndicator" destination="DDQ-pv-I4C" id="iZg-IJ-9JS"/>
                         <outlet property="changePasswordButton" destination="VKH-iy-d4O" id="qYR-xn-8Fw"/>
@@ -1066,11 +1051,11 @@
             </objects>
             <point key="canvasLocation" x="4328.8000000000002" y="1925.615763546798"/>
         </scene>
-        <!--Movies-->
+        <!--Navigation Controller-->
         <scene sceneID="eUb-RH-aEd">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JQb-QH-T6b" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Movies" image="film.fill" catalog="system" id="q6N-hp-aSK"/>
+                    <tabBarItem key="tabBarItem" title="" image="film.fill" catalog="system" id="q6N-hp-aSK"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="JZH-xe-Vro">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -1272,7 +1257,7 @@
                                         <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
-                                        <real key="value" value="0.0"/>
+                                        <real key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="starSize">
                                         <real key="value" value="45"/>
@@ -1286,6 +1271,8 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
                                         <color key="value" systemColor="systemYellowColor"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="icons8-star-144"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="icons8-star-100"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="3f8-bt-s2h">
@@ -1343,11 +1330,11 @@
             </objects>
             <point key="canvasLocation" x="5072.8000000000002" y="1925.615763546798"/>
         </scene>
-        <!--My rates-->
+        <!--Navigation Controller-->
         <scene sceneID="N6L-jz-aFG">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="i8v-Vf-F9h" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My rates" image="star.fill" catalog="system" id="mpg-cT-Jey"/>
+                    <tabBarItem key="tabBarItem" title="" image="star.fill" catalog="system" id="mpg-cT-Jey"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dIw-z6-qc0">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -1363,11 +1350,11 @@
             </objects>
             <point key="canvasLocation" x="1557.5999999999999" y="1925.615763546798"/>
         </scene>
-        <!--Profile-->
+        <!--Navigation Controller-->
         <scene sceneID="0z5-0V-IUj">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JY6-md-3Be" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" image="person.fill" catalog="system" id="adx-k0-1QT"/>
+                    <tabBarItem key="tabBarItem" title="" image="person.fill" catalog="system" id="adx-k0-1QT"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4qR-ji-jiZ">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -1394,12 +1381,17 @@
         <image name="film.fill" catalog="system" width="128" height="93"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="icons8-plus-24" width="24" height="24"/>
+        <image name="icons8-star-100" width="100" height="100"/>
+        <image name="icons8-star-144" width="144" height="144"/>
         <image name="movie-logo" width="470" height="378"/>
         <image name="no-avatar-1" width="512" height="512"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

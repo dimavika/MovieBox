@@ -24,6 +24,7 @@
 		E4244389252F8B9000033508 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244388252F8B9000033508 /* SignInViewController.swift */; };
 		E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427981D25B275D500875060 /* AdminDatabaseService.swift */; };
 		E4296E82258D1A32002BA912 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4296E81258D1A32002BA912 /* Movie.swift */; };
+		E435AD9225EAF19C002A7A71 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */; };
 		E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A815F2559775E00476E1B /* MovieTableViewCell.swift */; };
 		E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A817F2559913500476E1B /* NewMovieViewController.swift */; };
 		E43C11562539EE3D006CE5CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C11552539EE3D006CE5CC /* LoginViewController.swift */; };
@@ -31,6 +32,7 @@
 		E44B60AE25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */; };
 		E44B60B225DB260E007D1499 /* MoviesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */; };
 		E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E594C2540C779006BA108 /* UserProfileViewController.swift */; };
+		E45704C425E829CE0029B9E1 /* ExpandableMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45704C325E829CE0029B9E1 /* ExpandableMovies.swift */; };
 		E45CA7C325D457AB00F30417 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45CA7C225D457AB00F30417 /* UIButtonExtension.swift */; };
 		E46E48B725C20D7600546CA6 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E48B625C20D7600546CA6 /* MoviesViewController.swift */; };
 		E4714DED259D2B3900991A78 /* ReviewDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */; };
@@ -66,6 +68,7 @@
 		E4244388252F8B9000033508 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E427981D25B275D500875060 /* AdminDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDatabaseService.swift; sourceTree = "<group>"; };
 		E4296E81258D1A32002BA912 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		E43A815F2559775E00476E1B /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		E43A817F2559913500476E1B /* NewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMovieViewController.swift; sourceTree = "<group>"; };
 		E43C11552539EE3D006CE5CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
 		E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCollectionView.swift; sourceTree = "<group>"; };
 		E44E594C2540C779006BA108 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E45704C325E829CE0029B9E1 /* ExpandableMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableMovies.swift; sourceTree = "<group>"; };
 		E45CA7C225D457AB00F30417 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		E46E48B625C20D7600546CA6 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		E4714DEC259D2B3900991A78 /* ReviewDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDatabaseService.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 				E44B60B125DB260E007D1499 /* MoviesCollectionView.swift */,
 				E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */,
 				E43A815F2559775E00476E1B /* MovieTableViewCell.swift */,
+				E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -284,6 +289,7 @@
 			children = (
 				E4296E81258D1A32002BA912 /* Movie.swift */,
 				E44B11B2257C3AF90037F497 /* MovieDatabaseService.swift */,
+				E45704C325E829CE0029B9E1 /* ExpandableMovies.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -463,10 +469,12 @@
 				E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */,
 				E4904F7325A1343800BF053E /* Rating.swift in Sources */,
 				E4714DF1259D2D6200991A78 /* Review.swift in Sources */,
+				E435AD9225EAF19C002A7A71 /* UIViewExtension.swift in Sources */,
 				E44B11B3257C3AF90037F497 /* MovieDatabaseService.swift in Sources */,
 				E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */,
 				E45CA7C325D457AB00F30417 /* UIButtonExtension.swift in Sources */,
 				E44B60B225DB260E007D1499 /* MoviesCollectionView.swift in Sources */,
+				E45704C425E829CE0029B9E1 /* ExpandableMovies.swift in Sources */,
 				E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */,
 				E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */,
 				E424436E252F87AB00033508 /* SceneDelegate.swift in Sources */,

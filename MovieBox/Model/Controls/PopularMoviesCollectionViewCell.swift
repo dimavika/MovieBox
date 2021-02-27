@@ -20,7 +20,8 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.numberOfLines = 2
         label.textColor = #colorLiteral(red: 0.007841579616, green: 0.007844132371, blue: 0.007841020823, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,8 +38,7 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
     
     let ratingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .systemGreen
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -46,27 +46,24 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(movieImageView)
-        addSubview(titleLabel)
-        addSubview(genreLabel)
-        addSubview(ratingLabel)
+        contentView.addSubview(movieImageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(genreLabel)
+        contentView.addSubview(ratingLabel)
         
         backgroundColor = .white
         
-        // mainImageView constraints
         movieImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         movieImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         movieImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         movieImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2/3).isActive = true
         
-        // nameLabel constraints
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 12).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 5).isActive = true
         
-        // smallDescriptionLabel constraints
         genreLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        genreLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        genreLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7).isActive = true
         genreLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/2, constant: 10).isActive = true
         
         ratingLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true

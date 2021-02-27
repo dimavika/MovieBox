@@ -10,25 +10,29 @@ import FirebaseAuth
 
 class UserRatesViewController: UIViewController {
 
+    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
+    
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
-    var ratedMovies = [Movie]()
-    var moviesNew = [
-        [Movie](),
-        [Movie](),
-        [Movie](),
-        [Movie](),
-        [Movie]()
+    var ratedMovies = [
+        ExpandableMovies(isExpanded: true, movies: [Movie]()),
+        ExpandableMovies(isExpanded: false, movies: [Movie]()),
+        ExpandableMovies(isExpanded: false, movies: [Movie]()),
+        ExpandableMovies(isExpanded: false, movies: [Movie]()),
+        ExpandableMovies(isExpanded: false, movies: [Movie]())
     ]
     let headerTitles = ["1/5", "2/5", "3/5", "4/5", "5/5"]
     
     @IBOutlet weak var ratedMoviesTableView: UITableView!
-    @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationItem.backButtonTitle = "My rates"
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
@@ -40,80 +44,80 @@ class UserRatesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        
-//        switch sortSegmentedControl.selectedSegmentIndex {
-//        case 0:
-//            updateRatedMovies(sortType: true)
-//        case 1:
-//            updateRatedMovies(sortType: false)
-//        default:
-//            updateRatedMovies(sortType: true)
-//        }
         updateRatedMovies(sortType: true)
     }
-    
-    @IBAction func sortSegmControlValueChanged(_ sender: UISegmentedControl) {
-//        switch sortSegmentedControl.selectedSegmentIndex {
-//        case 0:
-//            updateRatedMovies(sortType: true)
-//        case 1:
-//            updateRatedMovies(sortType: false)
-//        default:
-//            updateRatedMovies(sortType: true)
-//        }
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
 extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 5
+        return ratedMovies.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return ratedMovies.count
-        return moviesNew[section].count
+        if !ratedMovies[section].isExpanded {
+            return 0
+        }
+        
+        return ratedMovies[section].movies.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return headerTitles[section]
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 30))
+        
+        let button = UIButton()
+        button.frame = CGRect.init(x: headerView.bounds.width - 50, y: 0, width: 30, height: 30)
+        if ratedMovies[section].isExpanded {
+            button.setImage(#imageLiteral(resourceName: "icons8-collapse-arrow-30"), for: .normal)
+        } else {
+            button.setImage(#imageLiteral(resourceName: "icons8-expand-arrow-50"), for: .normal)
+        }
+        button.tintColor = tintColor
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(handleOpenCloseSection), for: .touchUpInside)
+        button.tag = section
+        
+        let label = UILabel()
+        label.frame = CGRect.init(x: 30, y: 0, width: 50, height: 30)
+        label.backgroundColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textColor = tintColor
+        label.text = headerTitles[section]
+        
+        headerView.addSubview(label)
+        headerView.addSubview(button)
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedMovie = ratedMovies[indexPath.row]
+        let selectedMovie = ratedMovies[indexPath.section].movies[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! MovieTableViewCell
-            if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
-                viewController.movie = selectedMovie
-                reviewsDatabaseService.getAllReviewsForCurrentMovie(forMovieId: selectedMovie.id) { (result) in
-                    switch result {
-                    case .success(let reviews):
-                        viewController.reviews = reviews
-                    case .failure(let error):
-                        print("Can't get reviews cause: \(error)")
-                    }
+        
+        if let viewController = storyboard?.instantiateViewController(identifier: "MovieViewController") as? MovieViewController {
+            viewController.movie = selectedMovie
+            reviewsDatabaseService.getAllReviewsForCurrentMovie(forMovieId: selectedMovie.id) { (result) in
+                switch result {
+                case .success(let reviews):
+                    viewController.reviews = reviews
+                case .failure(let error):
+                    print("Can't get reviews cause: \(error)")
                 }
-                viewController.movieImage = cell.movieImageView.image
-                navigationController?.pushViewController(viewController, animated: true)
             }
+            viewController.movieImage = cell.movieImageView.image
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as! MovieTableViewCell
         
-//        let movie = ratedMovies[indexPath.row]
-        let movie = moviesNew[indexPath.section][indexPath.row]
+        let movie = ratedMovies[indexPath.section].movies[indexPath.row]
         
         cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
@@ -160,43 +164,54 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension UserRatesViewController {
-    //MARK: TODO SMTH WRONG!
-    private func updateRatedMovies(sortType: Bool) {
-        ratedMovies.removeAll()
-        for i in 0...4 {
-            moviesNew[i].removeAll()
+    
+    @objc func handleOpenCloseSection(sender: UIButton) {
+        let section = sender.tag
+        
+        var indexPaths = [IndexPath]()
+        for row in ratedMovies[section].movies.indices {
+            let indexPath = IndexPath(row: row, section: section)
+            indexPaths.append(indexPath)
         }
+        
+        let isExpanded = ratedMovies[section].isExpanded
+        ratedMovies[section].isExpanded = !isExpanded
+        
+        sender.setImage(isExpanded ? #imageLiteral(resourceName: "icons8-expand-arrow-50") : #imageLiteral(resourceName: "icons8-collapse-arrow-30"), for: .normal)
+        
+        if isExpanded {
+            ratedMoviesTableView.deleteRows(at: indexPaths, with: .fade)
+        } else {
+            ratedMoviesTableView.insertRows(at: indexPaths, with: .fade)
+        }
+    }
+    
+    private func updateRatedMovies(sortType: Bool) {
+        for i in 0...4 {
+            ratedMovies[i].movies.removeAll()
+        }
+        
         let user = Auth.auth().currentUser!
         ratingDatabaseService.getUserRatings(uid: user.uid) { (result) in
             switch result {
             case .failure(let error):
                 print("Can't get user ratings cause: \(error)")
             case .success(let ratings):
-//                if !ratings.isEmpty {
-//                    if sortType {
-//                        ratings.sort(by: { $0.value < $1.value })
-//                    } else {
-//                        ratings.sort(by: { $0.date.seconds < $1.date.seconds})
-//                    }
-                    
-                    for rating in ratings {
-                        self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
-                            switch result {
-                            case .failure(let error):
-                                print("\(error)")
-                            case.success(let movie):
-                                for rating in ratings {
-                                    if movie.id == rating.movieId {
-                                        self.moviesNew[rating.value - 1].append(movie)
-                                        self.ratedMoviesTableView.reloadData()
-                                    }
+                for rating in ratings {
+                    self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
+                        switch result {
+                        case .failure(let error):
+                            print("\(error)")
+                        case.success(let movie):
+                            for rating in ratings {
+                                if movie.id == rating.movieId {
+                                    self.ratedMovies[rating.value - 1].movies.append(movie)
+                                    self.ratedMoviesTableView.reloadData()
                                 }
-//                                self.ratedMovies.append(movie)
-                                
                             }
                         }
                     }
-//                }
+                }
             }
         }
     }

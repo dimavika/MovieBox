@@ -15,24 +15,27 @@ class MainViewController: UIViewController {
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
+    let reviewsDatabaseService = ReviewDatabaseService.shared
     
     var ratingsByLastMonth = [Rating]()
     var movieAndRatingsCount = [Movie: Int]()
     
     @IBOutlet weak var titleLabel: UILabel!
-    private var moviesCollectionView = MoviesCollectionView()
+    var moviesCollectionView = MoviesCollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationItem.backButtonTitle = "Home"
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
         self.tabBarController?.tabBar.tintColor = tintColor
         
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = tintColor
         
         view.addSubview(moviesCollectionView)
@@ -40,14 +43,16 @@ class MainViewController: UIViewController {
         moviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         moviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         moviesCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-        moviesCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        moviesCollectionView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        moviesCollectionView.reloadData()
+        
         checkLoggedIn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        getMovies()
+        updatePopularMoviesInThisMonth()
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -69,7 +74,7 @@ extension MainViewController {
         }
     }
     
-    private func getMovies() {
+    private func updatePopularMoviesInThisMonth() {
         movieAndRatingsCount.removeAll()
         ratingDatabaseService.getAllRatingsByLastMonth { (result) in
             switch result {

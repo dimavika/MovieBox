@@ -34,6 +34,7 @@ class UserProfileViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
@@ -83,8 +84,9 @@ class UserProfileViewController: UIViewController {
                                          borderWidth: 1.0)
         usernameTextField.clipsToBounds = true
         
-        userNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        userNameLabel.font = UIFont.boldSystemFont(ofSize: 25)
         emailLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        emailLabel.textColor = .gray
         
         userProfileImageView.layer.cornerRadius = userProfileImageView.frame.size.width / 2
         

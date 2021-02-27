@@ -53,7 +53,6 @@ class MovieViewController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = tintColor
-//        navigationController?.hidesBarsWhenKeyboardAppears = true
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         titleLabel.textColor = tintColor
@@ -111,7 +110,12 @@ class MovieViewController: UIViewController {
         countryLabel.text = movie!.country
         sloganLabel.text = "\"\(movie!.slogan)\""
         descriptionLabel.text = movie!.description
-        movieImageView.image = movieImage
+        if movieImage != nil {
+            movieImageView.image = movieImage
+        } else {
+            movieImageView.kf.setImage(with: URL(string: movie!.imageUrl))
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
