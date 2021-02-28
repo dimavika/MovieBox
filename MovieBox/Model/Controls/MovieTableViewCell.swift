@@ -27,10 +27,12 @@ class MovieTableViewCell: UITableViewCell {
         yearLabel.font = UIFont.boldSystemFont(ofSize: 17)
         genreLabel.textColor = .gray
         genreLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        ratingLabel.textColor = .black
-        ratingLabel.font = UIFont.boldSystemFont(ofSize: 19)
+        ratingLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        ratingLabel.textColor = .white
+        ratingLabel.clipsToBounds = true
+        ratingLabel.layer.cornerRadius = ratingLabel.frame.size.width / 2
         ratingCountLabel.textColor = .gray
-        ratingCountLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        ratingCountLabel.font = UIFont.boldSystemFont(ofSize: 15)
         countryLabel.textColor = .black
         countryLabel.font = UIFont.boldSystemFont(ofSize: 17)
         movieImageView.layer.cornerRadius = 10

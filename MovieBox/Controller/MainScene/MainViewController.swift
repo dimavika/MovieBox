@@ -19,9 +19,11 @@ class MainViewController: UIViewController {
     
     var ratingsByLastMonth = [Rating]()
     var movieAndRatingsCount = [Movie: Int]()
+    var moviesAndAvgRating = [Movie: Double]()
     
     @IBOutlet weak var titleLabel: UILabel!
-    var moviesCollectionView = MoviesCollectionView()
+    var popularMoviesCollectionView = MoviesCollectionView()
+    var topRatedMoviesCollectionView = MoviesCollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,16 +37,33 @@ class MainViewController: UIViewController {
         self.tabBarController?.tabBar.clipsToBounds = true
         self.tabBarController?.tabBar.tintColor = tintColor
         
+        let secondTitleLabel = UILabel()
+        secondTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        secondTitleLabel.textColor = tintColor
+        secondTitleLabel.text = "Top rated movies ever:"
+        secondTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = tintColor
         
-        view.addSubview(moviesCollectionView)
+        view.addSubview(secondTitleLabel)
+        view.addSubview(popularMoviesCollectionView)
+        view.addSubview(topRatedMoviesCollectionView)
         
-        moviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        moviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        moviesCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-        moviesCollectionView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        moviesCollectionView.reloadData()
+        popularMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        popularMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        popularMoviesCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        popularMoviesCollectionView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        popularMoviesCollectionView.reloadData()
+        
+        secondTitleLabel.topAnchor.constraint(equalTo: popularMoviesCollectionView.bottomAnchor).isActive = true
+        secondTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        
+        topRatedMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topRatedMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        topRatedMoviesCollectionView.topAnchor.constraint(equalTo: secondTitleLabel.bottomAnchor).isActive = true
+        topRatedMoviesCollectionView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        topRatedMoviesCollectionView.reloadData()
         
         checkLoggedIn()
     }
@@ -53,6 +72,7 @@ class MainViewController: UIViewController {
         super.viewWillAppear(true)
         
         updatePopularMoviesInThisMonth()
+        updateTopRatedMovies()
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -96,8 +116,8 @@ extension MainViewController {
                                 for item in movieAndRatingsCountSortedByCount {
                                     moviesForCollectionView.append(item.key)
                                 }
-                                self.moviesCollectionView.movies = Array(moviesForCollectionView.prefix(10))
-                                self.moviesCollectionView.reloadData()
+                                self.popularMoviesCollectionView.movies = Array(moviesForCollectionView.prefix(10))
+                                self.popularMoviesCollectionView.reloadData()
                             } else {
                                 self.movieAndRatingsCount[movie]! += 1
                                 let movieAndRatingsCountSortedByCount = self.movieAndRatingsCount.sorted(by: { $0.value > $1.value})
@@ -105,12 +125,39 @@ extension MainViewController {
                                 for item in movieAndRatingsCountSortedByCount {
                                     moviesForCollectionView.append(item.key)
                                 }
-                                self.moviesCollectionView.movies = Array(moviesForCollectionView.prefix(10))
-                                self.moviesCollectionView.reloadData()
+                                self.popularMoviesCollectionView.movies = Array(moviesForCollectionView.prefix(10))
+                                self.popularMoviesCollectionView.reloadData()
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    private func updateTopRatedMovies() {
+        moviesDatabaseService.getAllMovies { result in
+            switch result {
+            case .success(let movies):
+                for movie in movies {
+                    self.ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
+                        switch result {
+                        case .failure(let error):
+                            print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
+                        case .success(let ratingInfo):
+                            self.moviesAndAvgRating[movie] = ratingInfo.rating
+                            let moviesSortedByRating = self.moviesAndAvgRating.sorted(by: { $0.value > $1.value })
+                            var moviesForCollectionView = [Movie]()
+                            for item in moviesSortedByRating {
+                                moviesForCollectionView.append(item.key)
+                            }
+                            self.topRatedMoviesCollectionView.movies = Array(moviesForCollectionView.prefix(10))
+                            self.topRatedMoviesCollectionView.reloadData()
+                        }
+                    }
+                }
+            case .failure(let error):
+                print("Cannot get movies cause: \(error)")
             }
         }
     }

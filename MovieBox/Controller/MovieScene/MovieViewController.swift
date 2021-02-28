@@ -20,6 +20,8 @@ class MovieViewController: UIViewController {
     
     var movieImage: UIImage?
     var movie: Movie?
+    var movieBoxRate: String?
+    var movieBoxRateCount: String?
     var reviews = [Review]()
     let movieDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
@@ -35,6 +37,10 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var sloganLabel: UILabel!
+    @IBOutlet weak var myRateLabel: UILabel!
+    @IBOutlet weak var movieBoxRateTitleLabel: UILabel!
+    @IBOutlet weak var movieBoxRateLabel: UILabel!
+    @IBOutlet weak var movieBoxRateCountLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var reviewsTableView: UITableView!
     @IBOutlet weak var newReviewTextField: TextField!
@@ -61,6 +67,14 @@ class MovieViewController: UIViewController {
         countryLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
         sloganLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
         sloganLabel.textColor = .gray
+        myRateLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
+        movieBoxRateTitleLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
+        movieBoxRateLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        movieBoxRateLabel.textColor = .white
+        movieBoxRateLabel.clipsToBounds = true
+        movieBoxRateLabel.layer.cornerRadius = movieBoxRateLabel.frame.size.width / 2
+        movieBoxRateCountLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+        movieBoxRateCountLabel.textColor = .gray
         descriptionLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         
         deleteMovieButton.configure(color: UIColor(.white),
@@ -110,6 +124,37 @@ class MovieViewController: UIViewController {
         countryLabel.text = movie!.country
         sloganLabel.text = "\"\(movie!.slogan)\""
         descriptionLabel.text = movie!.description
+        if ((movieBoxRate != nil) && (movieBoxRateCount != nil)) {
+            movieBoxRateLabel.text = movieBoxRate
+            movieBoxRateCountLabel.text = movieBoxRateCount
+        } else {
+            ratingDatabaseService.getAverageRatingForMovie(movieId: movie!.id) { (result) in
+                switch result {
+                case .failure(let error):
+                    self.movieBoxRateLabel.text = "-"
+                    self.movieBoxRateLabel.backgroundColor = .gray
+                    print("Cannot get average rating of movie named: \(self.movie!.title) cause: \(error)")
+                case .success(let ratingInfo):
+                    if ratingInfo.rating.isEqual(to: 0.0) {
+                        self.movieBoxRateLabel.textColor = .black
+                        self.movieBoxRateLabel.text = "-"
+                        self.movieBoxRateLabel.backgroundColor = .gray
+                        self.movieBoxRateCountLabel.text = "0"
+                    } else {
+                        if ratingInfo.rating <= 2.0 {
+                            self.movieBoxRateLabel.backgroundColor = .red
+                        } else if ratingInfo.rating < 4.0 {
+                            self.movieBoxRateLabel.backgroundColor = .gray
+                        } else {
+                            self.movieBoxRateLabel.backgroundColor = .systemGreen
+                        }
+                        self.movieBoxRateLabel.text = String(format: "%.1f", ratingInfo.rating)
+                        self.movieBoxRateCountLabel.text = "\(ratingInfo.count)"
+                    }
+                }
+            }
+        }
+        
         if movieImage != nil {
             movieImageView.image = movieImage
         } else {

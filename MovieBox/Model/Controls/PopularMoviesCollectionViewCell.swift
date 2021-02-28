@@ -68,16 +68,15 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
         
         ratingLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         ratingLabel.centerYAnchor.constraint(equalTo: genreLabel.centerYAnchor).isActive = true
-        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.layer.cornerRadius = 5
-        self.layer.shadowRadius = 9
-        layer.shadowOpacity = 0.3
-        layer.shadowOffset = CGSize(width: 5, height: 8)
+        self.layer.shadowRadius = 1.7
+        layer.shadowOpacity = 0.45
+        layer.shadowOffset = CGSize(width: 0, height: 1.75)
         
         self.clipsToBounds = false
     }

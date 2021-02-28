@@ -82,7 +82,7 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         label.frame = CGRect.init(x: 30, y: 0, width: 50, height: 30)
         label.backgroundColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = tintColor
+        label.textColor = .black
         label.text = headerTitles[section]
         
         headerView.addSubview(label)
@@ -110,6 +110,8 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
             viewController.movieImage = cell.movieImageView.image
+            viewController.movieBoxRate = cell.ratingLabel.text
+            viewController.movieBoxRateCount = cell.ratingCountLabel.text
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -126,20 +128,21 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
             switch result {
             case .failure(let error):
+                cell.ratingLabel.backgroundColor = .gray
                 cell.ratingLabel.text = "-"
                 print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
             case .success(let ratingInfo):
                 if ratingInfo.rating.isEqual(to: 0.0) {
-                    cell.ratingLabel.textColor = .black
+                    cell.ratingLabel.backgroundColor = .gray
                     cell.ratingLabel.text = "-"
                     cell.ratingCountLabel.text = "0"
                 } else {
                     if ratingInfo.rating <= 2.0 {
-                        cell.ratingLabel.textColor = .red
+                        cell.ratingLabel.backgroundColor = .red
                     } else if ratingInfo.rating < 4.0 {
-                        cell.ratingLabel.textColor = .gray
+                        cell.ratingLabel.backgroundColor = .gray
                     } else {
-                        cell.ratingLabel.textColor = .systemGreen
+                        cell.ratingLabel.backgroundColor = .systemGreen
                     }
                     cell.ratingLabel.text = String(format: "%.1f", ratingInfo.rating)
                     cell.ratingCountLabel.text = "\(ratingInfo.count)"
