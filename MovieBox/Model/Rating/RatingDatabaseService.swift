@@ -17,7 +17,6 @@ class RatingDatabaseService {
         
     }
     
-    //MARK: TODO: INSTEAD USERNAME - UID EVERYWHERE
     func saveRating(movieId: String, value: Int, uid: String,
                     completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("ratings").whereField("movie_id", isEqualTo: movieId).whereField("uid", isEqualTo: uid)
@@ -43,8 +42,8 @@ class RatingDatabaseService {
                                   "value" : value,
                                   "uid" : uid,
                                   "date" : timestamp]) { (error) in
-                            if let error = error {
-                                completion(.failure(error))
+                            if error != nil {
+                                completion(.failure(RatingDatabaseError.failedToSave))
                             }
                             completion(.success("Saving rating is done!"))
                         }
@@ -55,8 +54,8 @@ class RatingDatabaseService {
                                   "value" : value,
                                   "uid" : uid,
                                   "date" : timestamp]) { (error) in
-                            if let error = error {
-                                completion(.failure(error))
+                            if error != nil {
+                                completion(.failure(RatingDatabaseError.failedToSave))
                             }
                             completion(.success("Saving rating is done!"))
                         }
@@ -162,6 +161,17 @@ class RatingDatabaseService {
                 }
                 completion(.success(ratings))
             }
+        }
+    }
+}
+
+public enum RatingDatabaseError: Error {
+    case failedToSave
+
+    public var localizedDescription: String {
+        switch self {
+        case .failedToSave:
+            return "Failed to save. Please try again later."
         }
     }
 }

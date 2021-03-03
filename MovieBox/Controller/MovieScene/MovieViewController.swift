@@ -125,18 +125,27 @@ class MovieViewController: UIViewController {
         sloganLabel.text = "\"\(movie!.slogan)\""
         descriptionLabel.text = movie!.description
         if ((movieBoxRate != nil) && (movieBoxRateCount != nil)) {
+            if movieBoxRate == "-" {
+                self.movieBoxRateLabel.backgroundColor = .gray
+            } else {
+                if Double(movieBoxRate!)! <= 2.0 {
+                    self.movieBoxRateLabel.backgroundColor = .red
+                } else if Double(movieBoxRate!)! < 4.0 {
+                    self.movieBoxRateLabel.backgroundColor = .gray
+                } else {
+                    self.movieBoxRateLabel.backgroundColor = .systemGreen
+                }
+            }
             movieBoxRateLabel.text = movieBoxRate
             movieBoxRateCountLabel.text = movieBoxRateCount
         } else {
             ratingDatabaseService.getAverageRatingForMovie(movieId: movie!.id) { (result) in
                 switch result {
-                case .failure(let error):
+                case .failure(_):
                     self.movieBoxRateLabel.text = "-"
                     self.movieBoxRateLabel.backgroundColor = .gray
-                    print("Cannot get average rating of movie named: \(self.movie!.title) cause: \(error)")
                 case .success(let ratingInfo):
                     if ratingInfo.rating.isEqual(to: 0.0) {
-                        self.movieBoxRateLabel.textColor = .black
                         self.movieBoxRateLabel.text = "-"
                         self.movieBoxRateLabel.backgroundColor = .gray
                         self.movieBoxRateCountLabel.text = "0"
@@ -185,19 +194,18 @@ class MovieViewController: UIViewController {
         let currentDate = formatter.string(from: date)
         reviewsDatabaseService.saveReview(text: newReviewTextField.text!, uid: user.uid, date: currentDate, movieId: movie!.id) { (result) in
             switch result {
-            case .success(let successMessage):
-                print(successMessage)
+            case .success(_):
                 self.reviewsDatabaseService.getAllReviewsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
                     switch result {
                     case .success(let updatedReviews):
                         self.reviews = updatedReviews
                         self.reviewsTableView.reloadData()
                     case .failure(let error):
-                        print("Failed to update reviews cause: \(error)")
+                        print(error.localizedDescription)
                     }
                 }
             case .failure(let error):
-                print("Failed to save review cause: \(error)")
+                AlertPresenter.presentAlertController(self, title: "Post review", message: error.localizedDescription)
             }
         }
         newReviewTextField.text = ""
@@ -231,25 +239,24 @@ class MovieViewController: UIViewController {
             switch result {
             case .failure(let error):
                 self.activityIndicator.stopAnimating()
-                print("Failed to delete movie cause: \(error)")
-            case .success(let successMessage):
+                AlertPresenter.presentAlertController(self, title: "Delete movie", message: error.localizedDescription)
+            case .success(_):
                 self.reviewsDatabaseService.deleteAllReviewsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
                     switch result {
                     case .success( _):
                         self.ratingDatabaseService.deleteAllRatingsForCurrentMovie(forMovieId: self.movie!.id) { (result) in
                             switch result {
-                            case .success( _):
+                            case .success(_):
                                 self.activityIndicator.stopAnimating()
                                 self.navigationController?.popViewController(animated: true)
                             case .failure(let error):
-                                print("\(error)")
+                                print("\(error.localizedDescription)")
                             }
                         }
                     case .failure(let error):
-                        print("\(error)")
+                        print("\(error.localizedDescription)")
                     }
                 }
-                print(successMessage)
             }
         }
     }
@@ -277,9 +284,8 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         
         userProfileDatabaseService.getUserByUid(uid: review.uid) { (result) in
             switch result {
-            case .failure(let error):
+            case .failure(_):
                 cell.usernameLabel.text = "Unknown"
-                print("\(error)")
             case .success(let user):
                 cell.usernameLabel.text = user.username
                 if !(user.photoURL == "No photo") {
@@ -303,11 +309,10 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
 //            reviewsDatabaseService.deleteReview(id: reviewToDelete.id) { (result) in
 //                switch result {
 //                case .failure(let error):
-//                    print("Failed to delete review cause: \(error)")
-//                case .success(let successMessage):
+//                    AlertPresenter.presentAlertController(self, title: "Delete review", message: error.localizedDescription)
+//                case .success(_):
 //                    self.reviews.remove(at: indexPath.row)
 //                    tableView.deleteRows(at: [indexPath], with: .fade)
-//                    print(successMessage)
 //                }
 //            }
 //
@@ -338,7 +343,7 @@ extension MovieViewController {
         adminDatabaseService.checkUserIsAdmin(uid: uid) { (result) in
             switch result {
             case .failure(let error):
-                print("Cannot get admin info cause: \(error)")
+                print(error.localizedDescription)
             case .success(let isAdmin):
                 if isAdmin {
                     self.deleteMovieButton.isHidden = false
@@ -356,7 +361,7 @@ extension MovieViewController {
                     self.ratingView.rating = Double(rating[0].value)
                 }
             case .failure(let error):
-                print("Can't ger user rate cause: \(error)")
+                print(error.localizedDescription)
             }
         }
     }
@@ -369,7 +374,7 @@ extension MovieViewController {
                 case .success(let successMessage):
                     print(successMessage)
                 case .failure(let error):
-                    print("Can't save user rate cause: \(error)")
+                    AlertPresenter.presentAlertController(self, title: "Save rate", message: error.localizedDescription)
                 }
             }
         }

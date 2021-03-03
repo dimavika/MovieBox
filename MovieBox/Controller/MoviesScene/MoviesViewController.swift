@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import Kingfisher
 
 class MoviesViewController: UIViewController {
 
@@ -111,7 +112,7 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
                     case .success(let reviews):
                         viewController.reviews = reviews
                     case .failure(let error):
-                        print("Can't get reviews cause: \(error)")
+                        print(error.localizedDescription)
                     }
                 }
                 viewController.movieImage = cell.movieImageView.image
@@ -137,10 +138,9 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.countryLabel.text = movie.country
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
             switch result {
-            case .failure(let error):
+            case .failure(_):
                 cell.ratingLabel.backgroundColor = .gray
                 cell.ratingLabel.text = "-"
-                print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
             case .success(let ratingInfo):
                 if ratingInfo.rating.isEqual(to: 0.0) {
                     cell.ratingLabel.backgroundColor = .gray
@@ -161,16 +161,9 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.imageActivityIndicator.startAnimating()
-        moviesDatabaseService.downloadImage(forURL: movie.imageUrl) { result in
-            switch result {
-            case .success(let image):
-                cell.movieImageView.image = image
-                cell.imageActivityIndicator.stopAnimating()
-            //MARK: TODO DEFAULT PICTURE
-            case .failure(let error):
-                print("No image cause: \(error)")
-            }
-        }
+        //MARK: TODO DEFAULT PICTURE
+        cell.movieImageView.kf.setImage(with: URL(string: movie.imageUrl))
+        cell.imageActivityIndicator.stopAnimating()
         
         return cell
     }
@@ -187,7 +180,7 @@ extension MoviesViewController {
                 self.mostRecentMovies = Array(self.movies.prefix(2))
                 self.moviesTableView.reloadData()
             case .failure(let error):
-                print("Cannot get movies cause: \(error)")
+                print(error.localizedDescription)
             }
         }
     }
@@ -197,7 +190,7 @@ extension MoviesViewController {
         adminDatabaseService.checkUserIsAdmin(uid: uid) { (result) in
             switch result {
             case .failure(let error):
-                print("Cannot get admin info cause: \(error)")
+                print(error.localizedDescription)
             case .success(let isAdmin):
                 if !isAdmin {
                     self.navigationItem.setRightBarButton(nil, animated: false)

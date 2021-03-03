@@ -81,13 +81,10 @@ class SignInViewController: UIViewController {
             let password = passwordTextField.text,
             email != "",
             password != ""
-        else {  activityIndicator.stopAnimating()
-                let alert = UIAlertController(title: "Account data",
-                                              message: "Please enter your email and password.",
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
+        else {
+            activityIndicator.stopAnimating()
+            AlertPresenter.presentAlertController(self, title: "Account data", message: "Please enter your email and password.")
+            return
         }
         
         signIn(email: email, password: password)

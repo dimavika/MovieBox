@@ -139,7 +139,16 @@ class UserProfileViewController: UIViewController {
     }
     
     @IBAction func submitButtonPressed(_ sender: UIButton) {
-        updateUsername(username: usernameTextField.text!)
+        userProfileDatabaseService.updateUsername(username: usernameTextField.text!) { result in
+            switch result {
+            case .failure(let error):
+                self.activityIndicator.stopAnimating()
+                AlertPresenter.presentAlertController(self, title: "Failed to update username", message: error.localizedDescription)
+            case .success(let username):
+                self.userNameLabel.text = username
+                self.activityIndicator.stopAnimating()
+            }
+        }
         
         editUsernameButton.setTitle("Edit", for: .normal)
         usernameTextField.isHidden = true
@@ -198,34 +207,11 @@ extension UserProfileViewController {
         }
     }
     
-    private func updateUsername(username: String) {
-        let user = Auth.auth().currentUser!
-        let changeRequest = user.createProfileChangeRequest()
-        changeRequest.displayName = username
-        changeRequest.commitChanges { (error) in
-            if let error = error {
-                self.activityIndicator.stopAnimating()
-                print("\(error)")
-            } else {
-                self.userProfileDatabaseService.saveUser(uid: user.uid, username: username, email: user.email!, photoURL: user.photoURL!.absoluteString) { (result) in
-                    switch result {
-                    case .failure(let error):
-                        print("\(error)")
-                    case .success(_):
-                        self.userNameLabel.text = username
-                        self.activityIndicator.stopAnimating()
-                        print("Username updated.")
-                    }
-                }
-            }
-        }
-    }
+    
     
     private func signOut() {
-        
         do {
             try Auth.auth().signOut()
-            
             DispatchQueue.main.async {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let loginViewController = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
@@ -233,9 +219,8 @@ extension UserProfileViewController {
                 self.present(loginViewController, animated: true)
                 return
             }
-            
         } catch let error {
-            print("Failed to sign out with error: ", error.localizedDescription)
+            AlertPresenter.presentAlertController(self, title: "Failed to sign out", message: error.localizedDescription)
         }
     }
     
@@ -245,9 +230,7 @@ extension UserProfileViewController {
             if let error = error {
                 print("\(error)")
             } else {
-                let alert = UIAlertController(title: "Password Reset", message: "Email with link to reset your password was sent to your email: \(user.email!)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                AlertPresenter.presentAlertController(self, title: "Password Reset", message: "Email with link to reset your password was sent to your email: \(user.email!)")
             }
         }
     }

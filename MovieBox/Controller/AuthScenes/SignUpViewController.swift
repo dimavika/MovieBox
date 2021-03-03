@@ -73,7 +73,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
-
+        
         activityIndicator.startAnimating()
         
         guard
@@ -86,13 +86,10 @@ class SignUpViewController: UIViewController {
             username != "",
             confirmedPassword != "",
             password == confirmedPassword
-        else {  activityIndicator.stopAnimating()
-                let alert = UIAlertController(title: "Incorrect account data",
-                                              message: "Check if you entered all the account data or the email and password confirmation are entered correctly.",
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
+        else {
+            activityIndicator.stopAnimating()
+            AlertPresenter.presentAlertController(self, title: "Incorrect account data", message: "Check if you entered all the account data or the email and password confirmation are entered correctly.")
+            return
         }
         
         createAccount(username: username, email: email, password: password)

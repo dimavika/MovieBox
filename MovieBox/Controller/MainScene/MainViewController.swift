@@ -40,7 +40,7 @@ class MainViewController: UIViewController {
         let secondTitleLabel = UILabel()
         secondTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         secondTitleLabel.textColor = tintColor
-        secondTitleLabel.text = "Top rated movies ever:"
+        secondTitleLabel.text = "Top rated movies:"
         secondTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
         popularMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         popularMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         popularMoviesCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-        popularMoviesCollectionView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        popularMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.3).isActive = true
         popularMoviesCollectionView.reloadData()
         
         secondTitleLabel.topAnchor.constraint(equalTo: popularMoviesCollectionView.bottomAnchor).isActive = true
@@ -62,7 +62,7 @@ class MainViewController: UIViewController {
         topRatedMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topRatedMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topRatedMoviesCollectionView.topAnchor.constraint(equalTo: secondTitleLabel.bottomAnchor).isActive = true
-        topRatedMoviesCollectionView.heightAnchor.constraint(equalToConstant: 280).isActive = true
+        topRatedMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.3).isActive = true
         topRatedMoviesCollectionView.reloadData()
         
         checkLoggedIn()
@@ -98,16 +98,16 @@ extension MainViewController {
         movieAndRatingsCount.removeAll()
         ratingDatabaseService.getAllRatingsByLastMonth { (result) in
             switch result {
-            case .failure(_):
-                print("gg")
+            case .failure(let error):
+                print(error.localizedDescription)
             case .success(let ratings):
                 self.ratingsByLastMonth = ratings
                 
                 for rating in self.ratingsByLastMonth {
                     self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
                         switch result {
-                        case .failure(_):
-                            print("gg")
+                        case .failure(let error):
+                            print(error.localizedDescription)
                         case .success(let movie):
                             if self.movieAndRatingsCount[movie] == nil {
                                 self.movieAndRatingsCount[movie] = 1
@@ -143,7 +143,7 @@ extension MainViewController {
                     self.ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
                         switch result {
                         case .failure(let error):
-                            print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
+                            print(error.localizedDescription)
                         case .success(let ratingInfo):
                             self.moviesAndAvgRating[movie] = ratingInfo.rating
                             let moviesSortedByRating = self.moviesAndAvgRating.sorted(by: { $0.value > $1.value })
@@ -157,7 +157,7 @@ extension MainViewController {
                     }
                 }
             case .failure(let error):
-                print("Cannot get movies cause: \(error)")
+                print(error.localizedDescription)
             }
         }
     }

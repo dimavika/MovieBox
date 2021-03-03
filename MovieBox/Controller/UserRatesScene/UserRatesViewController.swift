@@ -106,7 +106,7 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
                 case .success(let reviews):
                     viewController.reviews = reviews
                 case .failure(let error):
-                    print("Can't get reviews cause: \(error)")
+                    print(error.localizedDescription)
                 }
             }
             viewController.movieImage = cell.movieImageView.image
@@ -127,10 +127,9 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.countryLabel.text = movie.country
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in
             switch result {
-            case .failure(let error):
+            case .failure(_):
                 cell.ratingLabel.backgroundColor = .gray
                 cell.ratingLabel.text = "-"
-                print("Cannot get average rating of movie named: \(movie.title) cause: \(error)")
             case .success(let ratingInfo):
                 if ratingInfo.rating.isEqual(to: 0.0) {
                     cell.ratingLabel.backgroundColor = .gray
@@ -151,17 +150,9 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.imageActivityIndicator.startAnimating()
-        moviesDatabaseService.downloadImage(forURL: movie.imageUrl) { result in
-            switch result {
-            case .success(let image):
-                cell.movieImageView.image = image
-                cell.imageActivityIndicator.stopAnimating()
-            //MARK: TODO DEFAULT PICTURE
-            case .failure(let error):
-                print("No image cause: \(error)")
-            }
-        }
-        
+        //MARK: TODO DEFAULT PICTURE
+        cell.movieImageView.kf.setImage(with: URL(string: movie.imageUrl))
+        cell.imageActivityIndicator.stopAnimating()
         return cell
     }
 }
@@ -198,13 +189,13 @@ extension UserRatesViewController {
         ratingDatabaseService.getUserRatings(uid: user.uid) { (result) in
             switch result {
             case .failure(let error):
-                print("Can't get user ratings cause: \(error)")
+                print(error.localizedDescription)
             case .success(let ratings):
                 for rating in ratings {
                     self.moviesDatabaseService.getMovieById(movieId: rating.movieId) { (result) in
                         switch result {
                         case .failure(let error):
-                            print("\(error)")
+                            print(error.localizedDescription)
                         case.success(let movie):
                             for rating in ratings {
                                 if movie.id == rating.movieId {

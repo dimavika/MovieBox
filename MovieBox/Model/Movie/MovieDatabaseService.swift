@@ -45,18 +45,18 @@ class MovieDatabaseService {
                                       "image_url" : imageUrl,
                                       "video_url" : videoDownloadURL,
                                       "date" : timestamp]) { (error) in
-                                if let error = error {
-                                    completion(.failure(error))
+                                if error != nil {
+                                    completion(.failure(MovieDatabaseError.failedToSave))
                                 }
                                 completion(.success("Saving movie is done!"))
                             }
-                    case .failure(let error):
-                        completion(.failure(error))
+                    case .failure(_):
+                        completion(.failure(MovieDatabaseError.failedToSave))
                     }
                 }
                 
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure(_):
+                completion(.failure(MovieDatabaseError.failedToSave))
             }
         }
     }
@@ -170,31 +170,25 @@ class MovieDatabaseService {
     
     public func deleteMovie(id: String, completion: @escaping (Result<String, Error>) -> Void) {
         firestore.collection("movies").document(id).delete { error in
-            if let error = error {
-                print("Couldn't delete document from firestore cause: \(error)")
-                completion(.failure(error))
+            if error != nil {
+                completion(.failure(MovieDatabaseError.failedToDelete))
             }
         }
-        storageRef.child("movie_image").child(id).delete { error in
-            if let error = error {
-                print("Couldn't delete image from storage cause: \(error)")
-            }
-        }
-        storageRef.child("movie_trailer").child(id).delete { error in
-            if let error = error {
-                print("Couldn't delete video trailer from storage cause: \(error)")
-            }
-        }
+        storageRef.child("movie_image").child(id).delete()
+        storageRef.child("movie_trailer").child(id).delete()
         completion(.success("Movie is deleted."))
     }
     
-    public enum DatabaseError: Error {
-        case failedToFetch
+    public enum MovieDatabaseError: Error {
+        case failedToSave
+        case failedToDelete
 
         public var localizedDescription: String {
             switch self {
-            case .failedToFetch:
-                return "This means blah failed"
+            case .failedToSave:
+                return "Failed to save. Please try again later."
+            case .failedToDelete:
+                return "Failed to delete. Please try again later."
             }
         }
     }

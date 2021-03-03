@@ -17,22 +17,13 @@ extension SignInViewController {
             
             if let error = error {
                 self.activityIndicator.stopAnimating()
-                self.presentAlertController(title: "Incorrect account data", message: error.localizedDescription)
+                AlertPresenter.presentAlertController(self, title: "Incorrect account data", message: error.localizedDescription)
                 return
             }
             
             self.activityIndicator.stopAnimating()
             self.openMainVC()
         }
-    }
-    
-    func presentAlertController(title: String, message: String) {
-        
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     func openMainVC() {
@@ -46,13 +37,13 @@ extension SignInViewController: GIDSignInDelegate {
         
         if let error = error {
             self.activityIndicator.stopAnimating()
-            presentAlertController(title: "Failed to sign in with Google", message: error.localizedDescription)
+            AlertPresenter.presentAlertController(self, title: "Failed to sign in with Google", message: error.localizedDescription)
             return
         }
 
         guard let authentication = user.authentication else {
             self.activityIndicator.stopAnimating()
-            presentAlertController(title: "Failed to sign in with Google", message: "There is not your fault. Probably something went wrong with Google authentication provider. Please try again later.")
+            AlertPresenter.presentAlertController(self, title: "Failed to sign in with Google", message: "There is not your fault. Probably something went wrong with Google authentication provider. Please try again later.")
             return
         }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
@@ -60,7 +51,7 @@ extension SignInViewController: GIDSignInDelegate {
         Auth.auth().signIn(with: credential) { (user, error) in
             if let error = error {
                 self.activityIndicator.stopAnimating()
-                self.presentAlertController(title: "Failed to retrieve user data from Google", message: error.localizedDescription)
+                AlertPresenter.presentAlertController(self, title: "Failed to retrieve user data from Google", message: error.localizedDescription)
                 return
             }
             
@@ -79,5 +70,4 @@ extension SignInViewController: GIDSignInDelegate {
             }
         }
     }
-    
 }

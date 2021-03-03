@@ -101,7 +101,6 @@ class NewMovieViewController: UIViewController {
         movieImageView.layer.borderColor = borderColor.cgColor
         movieImageView.layer.borderWidth = 1.0
         
-//        descriptionTextView.isEditable = true
         descriptionTextView.textContainerInset = UIEdgeInsets(top: 10, left: 15, bottom: 0, right: 15)
         descriptionTextView.font = UIFont.systemFont(ofSize: 16)
         descriptionTextView.layer.borderColor = borderColor.cgColor
@@ -138,13 +137,12 @@ class NewMovieViewController: UIViewController {
         guard let image = movieImageView.image else { return }
         databaseService.saveMovie(title: titleTextField.text!, genre: genreTextField.text!, year: yearTextField.text!, country: countryTextField.text!, slogan: sloganTextField.text!, description: descriptionTextView.text, image: image, videoURL: videoURL!) { (result) in
             switch result {
-            case .success(let successMessage):
+            case .success(_):
                 self.savingActivityIndicator.stopAnimating()
                 self.navigationController?.popViewController(animated: true)
-                print(successMessage)
             case .failure(let error):
                 self.savingActivityIndicator.stopAnimating()
-                print(error)
+                AlertPresenter.presentAlertController(self, title: "Save movie", message: error.localizedDescription)
             }
         }
     }

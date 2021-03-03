@@ -69,4 +69,35 @@ class UserProfileDatabaseService {
             }
         }
     }
+    
+    func updateUsername(username: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let user = Auth.auth().currentUser!
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = username
+        changeRequest.commitChanges { (error) in
+            if error != nil {
+                completion(.failure(UserDatabaseError.failedToUpdateUsername))
+            } else {
+                self.saveUser(uid: user.uid, username: username, email: user.email!, photoURL: user.photoURL!.absoluteString) { (result) in
+                    switch result {
+                    case .failure(_):
+                        completion(.failure(UserDatabaseError.failedToUpdateUsername))
+                    case .success(_):
+                        completion(.success(username))
+                    }
+                }
+            }
+        }
+    }
+}
+
+public enum UserDatabaseError: Error {
+    case failedToUpdateUsername
+    
+    public var localizedDescription: String {
+        switch self {
+        case .failedToUpdateUsername:
+            return "Failed to update username. Please try again later."
+        }
+    }
 }

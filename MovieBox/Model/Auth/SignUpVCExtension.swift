@@ -16,11 +16,8 @@ extension SignUpViewController {
             
             if let error = error {
                 self.activityIndicator.stopAnimating()
+                AlertPresenter.presentAlertController(self, title: "Failed to create account", message: error.localizedDescription)
                 
-                let alert = UIAlertController(title: "Failed to create account", message: "\(error.localizedDescription)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-
                 return
             }
             

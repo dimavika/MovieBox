@@ -24,6 +24,7 @@
 		E4244389252F8B9000033508 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4244388252F8B9000033508 /* SignInViewController.swift */; };
 		E427981E25B275D500875060 /* AdminDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427981D25B275D500875060 /* AdminDatabaseService.swift */; };
 		E4296E82258D1A32002BA912 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4296E81258D1A32002BA912 /* Movie.swift */; };
+		E43047BB25EF108A0098AF0D /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43047BA25EF108A0098AF0D /* AlertPresenter.swift */; };
 		E435AD9225EAF19C002A7A71 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */; };
 		E43A81602559775E00476E1B /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A815F2559775E00476E1B /* MovieTableViewCell.swift */; };
 		E43A81802559913500476E1B /* NewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43A817F2559913500476E1B /* NewMovieViewController.swift */; };
@@ -68,6 +69,7 @@
 		E4244388252F8B9000033508 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		E427981D25B275D500875060 /* AdminDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDatabaseService.swift; sourceTree = "<group>"; };
 		E4296E81258D1A32002BA912 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		E43047BA25EF108A0098AF0D /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		E43A815F2559775E00476E1B /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		E43A817F2559913500476E1B /* NewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMovieViewController.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				E44B60AD25DB0EF1007D1499 /* PopularMoviesCollectionViewCell.swift */,
 				E43A815F2559775E00476E1B /* MovieTableViewCell.swift */,
 				E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */,
+				E43047BA25EF108A0098AF0D /* AlertPresenter.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				E471F1D125D5974A00A92F61 /* UITextFieldExtension.swift in Sources */,
 				E4244370252F87AB00033508 /* MainViewController.swift in Sources */,
 				E44E594D2540C779006BA108 /* UserProfileViewController.swift in Sources */,
+				E43047BB25EF108A0098AF0D /* AlertPresenter.swift in Sources */,
 				E4076EFC254C9DA200F53FA1 /* SignInVCExtension.swift in Sources */,
 				E471F1D425D59DA800A92F61 /* UIViewControllerExtension.swift in Sources */,
 				E424436C252F87AB00033508 /* AppDelegate.swift in Sources */,
