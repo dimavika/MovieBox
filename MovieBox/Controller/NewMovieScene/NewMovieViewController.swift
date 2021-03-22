@@ -15,8 +15,6 @@ class NewMovieViewController: UIViewController {
     var videoURL: URL?
     let databaseService = MovieDatabaseService.shared
     
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     private let topButtonsColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
     
     @IBOutlet weak var movieImageView: UIImageView!
@@ -38,12 +36,12 @@ class NewMovieViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.tintColor = tintColor
+        self.navigationController?.navigationBar.tintColor = Constants.tintColor
         
         saveButton.configure(color: UIColor(.gray),
                                  font: UIFont.boldSystemFont(ofSize: 15),
                                  cornerRadius: saveButton.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: .white,
                                  borderWidth: 1.0)
         photoButton.configure(color: UIColor(.white),
@@ -62,35 +60,35 @@ class NewMovieViewController: UIViewController {
         titleTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: titleTextField.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         titleTextField.clipsToBounds = true
         yearTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: yearTextField.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         yearTextField.clipsToBounds = true
         genreTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: genreTextField.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         genreTextField.clipsToBounds = true
         countryTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: countryTextField.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         countryTextField.clipsToBounds = true
         sloganTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: sloganTextField.bounds.height / 2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         sloganTextField.clipsToBounds = true
@@ -98,12 +96,12 @@ class NewMovieViewController: UIViewController {
         videoLabel.font = UIFont.boldSystemFont(ofSize: 17)
         
         movieImageView.layer.cornerRadius = movieImageView.frame.size.width / 2
-        movieImageView.layer.borderColor = borderColor.cgColor
+        movieImageView.layer.borderColor = Constants.borderColor.cgColor
         movieImageView.layer.borderWidth = 1.0
         
         descriptionTextView.textContainerInset = UIEdgeInsets(top: 10, left: 15, bottom: 0, right: 15)
         descriptionTextView.font = UIFont.systemFont(ofSize: 16)
-        descriptionTextView.layer.borderColor = borderColor.cgColor
+        descriptionTextView.layer.borderColor = Constants.borderColor.cgColor
         descriptionTextView.layer.cornerRadius = descriptionTextView.frame.height / 4
         descriptionTextView.layer.borderWidth = 1.0
         
@@ -221,8 +219,8 @@ extension NewMovieViewController {
                                     if videoLabel.text != "No video" {
                                         navigationItem.rightBarButtonItem!.isEnabled = true
                                         saveButton.setTitleColor(.white, for: .normal)
-                                        saveButton.backgroundColor = tintColor
-                                        saveButton.layer.borderColor = tintColor.cgColor
+                                        saveButton.backgroundColor = Constants.tintColor
+                                        saveButton.layer.borderColor = Constants.tintColor.cgColor
                                         return
                                     }
                                 }
@@ -235,6 +233,6 @@ extension NewMovieViewController {
         navigationItem.rightBarButtonItem!.isEnabled = false
         saveButton.setTitleColor(.gray, for: .normal)
         saveButton.backgroundColor = .white
-        saveButton.layer.borderColor = borderColor.cgColor
+        saveButton.layer.borderColor = Constants.borderColor.cgColor
     }
 }

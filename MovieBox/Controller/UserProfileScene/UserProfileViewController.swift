@@ -11,8 +11,6 @@ import Kingfisher
 
 class UserProfileViewController: UIViewController {
     
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     private let photoButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
     
     let userProfileDatabaseService = UserProfileDatabaseService.shared
@@ -21,8 +19,6 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var photoButton: UIButton!
     @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var changePasswordButton: UIButton!
-    @IBOutlet weak var deleteAccountButton: UIButton!
-    
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var usernameTextField: TextField!
     @IBOutlet weak var submitButton: UIButton!
@@ -34,7 +30,7 @@ class UserProfileViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
@@ -60,26 +56,20 @@ class UserProfileViewController: UIViewController {
         changePasswordButton.configure(color: UIColor(.white),
                                          font: UIFont.boldSystemFont(ofSize: 15),
                                          cornerRadius: changePasswordButton.bounds.height / 2,
-                                         borderColor: tintColor,
-                                         backgroundColor: tintColor,
-                                         borderWidth: 1.0)
-        deleteAccountButton.configure(color: UIColor(.white),
-                                         font: UIFont.boldSystemFont(ofSize: 15),
-                                         cornerRadius: deleteAccountButton.bounds.height / 2,
-                                         borderColor: tintColor,
-                                         backgroundColor: tintColor,
+                                         borderColor: Constants.tintColor,
+                                         backgroundColor: Constants.tintColor,
                                          borderWidth: 1.0)
         signOutButton.configure(color: UIColor(.black),
-                                         font: UIFont.boldSystemFont(ofSize: 18),
+                                         font: UIFont.boldSystemFont(ofSize: 21),
                                          cornerRadius: signOutButton.bounds.height / 2,
-                                         borderColor: borderColor,
+                                         borderColor: Constants.borderColor,
                                          backgroundColor: .white,
                                          borderWidth: 1.0)
         
         usernameTextField.configure(color: UIColor(.black),
                                          font: UIFont.systemFont(ofSize: 16),
                                          cornerRadius: usernameTextField.bounds.height / 2,
-                                         borderColor: borderColor,
+                                         borderColor: Constants.borderColor,
                                          backgroundColor: UIColor(.white),
                                          borderWidth: 1.0)
         usernameTextField.clipsToBounds = true
@@ -99,18 +89,15 @@ class UserProfileViewController: UIViewController {
         let user = Auth.auth().currentUser!
         if !(user.photoURL == nil) {
             userProfileImageView.kf.setImage(with: user.photoURL)
+        } else {
+            userProfileImageView.image = UIImage(named: "no-avatar-1")
         }
         userNameLabel.text = user.displayName!
         emailLabel.text = user.email!
     }
     
-    
-
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         signOut()
-    }
-    
-    @IBAction func deleteButtonPressed(_ sender: UIButton) {
     }
     
     @IBAction func changePasswordButtonPressed(_ sender: UIButton) {
@@ -158,8 +145,14 @@ class UserProfileViewController: UIViewController {
     @IBAction func usernameTextFieldDidChange(_ sender: TextField) {
         if !usernameTextField.text!.isEmpty {
             submitButton.isEnabled = true
+            submitButton.setTitleColor(.white, for: .normal)
+            submitButton.backgroundColor = photoButtonColor
+            submitButton.layer.borderColor = photoButtonColor.cgColor
         } else {
             submitButton.isEnabled = false
+            submitButton.setTitleColor(.gray, for: .normal)
+            submitButton.backgroundColor = .white
+            submitButton.layer.borderColor = Constants.borderColor.cgColor
         }
     }
 }

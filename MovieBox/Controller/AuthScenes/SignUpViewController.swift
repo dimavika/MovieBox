@@ -10,8 +10,6 @@ import Firebase
 
 class SignUpViewController: UIViewController {
 
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     private let signUpButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,29 +24,29 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backButton.tintColor = tintColor
+        backButton.tintColor = Constants.tintColor
         
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         
         usernameTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         usernameTextField.clipsToBounds = true
         emailTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         emailTextField.clipsToBounds = true
         passwordTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         passwordTextField.clearsOnBeginEditing = false
@@ -56,7 +54,7 @@ class SignUpViewController: UIViewController {
         confirmPasswordTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         confirmPasswordTextField.clearsOnBeginEditing = false
@@ -65,7 +63,7 @@ class SignUpViewController: UIViewController {
         signUpButton.configure(color: UIColor(.white),
                                font: UIFont.boldSystemFont(ofSize: 20),
                                cornerRadius: 55/2,
-                               borderColor: borderColor,
+                               borderColor: Constants.borderColor,
                                backgroundColor: signUpButtonColor,
                                borderWidth: 1.0)
         

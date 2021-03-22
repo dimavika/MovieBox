@@ -42,6 +42,7 @@
 		E471F1D425D59DA800A92F61 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1D325D59DA800A92F61 /* UIViewControllerExtension.swift */; };
 		E471F1D725D5ACFC00A92F61 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1D625D5ACFC00A92F61 /* TextField.swift */; };
 		E471F1DB25D5D85A00A92F61 /* SignUpVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E471F1DA25D5D85A00A92F61 /* SignUpVCExtension.swift */; };
+		E475C6292608ED84003CCE73 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E475C6282608ED84003CCE73 /* Constants.swift */; };
 		E4904F7325A1343800BF053E /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7225A1343800BF053E /* Rating.swift */; };
 		E4904F7625A134E900BF053E /* RatingDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4904F7525A134E900BF053E /* RatingDatabaseService.swift */; };
 		E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2B2B2259672540097714B /* MovieViewController.swift */; };
@@ -87,6 +88,7 @@
 		E471F1D325D59DA800A92F61 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		E471F1D625D5ACFC00A92F61 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		E471F1DA25D5D85A00A92F61 /* SignUpVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVCExtension.swift; sourceTree = "<group>"; };
+		E475C6282608ED84003CCE73 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E4904F7225A1343800BF053E /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		E4904F7525A134E900BF053E /* RatingDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingDatabaseService.swift; sourceTree = "<group>"; };
 		E4A2B2B2259672540097714B /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				E43A815F2559775E00476E1B /* MovieTableViewCell.swift */,
 				E435AD9125EAF19C002A7A71 /* UIViewExtension.swift */,
 				E43047BA25EF108A0098AF0D /* AlertPresenter.swift */,
+				E475C6282608ED84003CCE73 /* Constants.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				E4046047259D2045005EEE0D /* ReviewTableViewCell.swift in Sources */,
 				E4904F7325A1343800BF053E /* Rating.swift in Sources */,
 				E4714DF1259D2D6200991A78 /* Review.swift in Sources */,
+				E475C6292608ED84003CCE73 /* Constants.swift in Sources */,
 				E435AD9225EAF19C002A7A71 /* UIViewExtension.swift in Sources */,
 				E44B11B3257C3AF90037F497 /* MovieDatabaseService.swift in Sources */,
 				E4A2B2B3259672540097714B /* MovieViewController.swift in Sources */,

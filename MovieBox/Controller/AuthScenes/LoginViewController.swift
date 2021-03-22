@@ -9,9 +9,6 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
-    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var signInButton: UIButton!
@@ -23,19 +20,19 @@ class LoginViewController: UIViewController {
         signInButton.configure(color: UIColor(.white),
                                font: UIFont.boldSystemFont(ofSize: 20),
                                cornerRadius: 55/2,
-                               borderColor: tintColor,
-                               backgroundColor: tintColor,
+                               borderColor: Constants.tintColor,
+                               backgroundColor: Constants.tintColor,
                                borderWidth: 1.0)
         
         signUpButton.configure(color: UIColor(.black),
                                font: UIFont.boldSystemFont(ofSize: 20),
                                cornerRadius: 55/2,
-                               borderColor: borderColor,
+                               borderColor: Constants.borderColor,
                                backgroundColor: UIColor(.white),
                                borderWidth: 1.0)
 
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         
         subtitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         subtitleLabel.textColor = .black

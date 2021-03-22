@@ -42,6 +42,9 @@ class MoviesCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularMoviesCollectionViewCell.reuseId, for: indexPath) as! PopularMoviesCollectionViewCell
         let movie = movies[indexPath.row]
         cell.movieImageView.kf.setImage(with: URL(string: movies[indexPath.row].imageUrl))
+        if cell.movieImageView.image == nil {
+            cell.movieImageView.image = UIImage(named: "def-movie-icon")
+        }
         cell.titleLabel.text = movie.title
         cell.genreLabel.text = movie.genre
         ratingDatabaseService.getAverageRatingForMovie(movieId: movie.id) { (result) in

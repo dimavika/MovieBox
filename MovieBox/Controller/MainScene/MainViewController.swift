@@ -10,8 +10,6 @@ import FirebaseAuth
 import Kingfisher
 
 class MainViewController: UIViewController {
-
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let ratingDatabaseService = RatingDatabaseService.shared
@@ -30,21 +28,21 @@ class MainViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
         self.navigationItem.backButtonTitle = "Home"
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
-        self.tabBarController?.tabBar.tintColor = tintColor
+        self.tabBarController?.tabBar.tintColor = Constants.tintColor
         
         let secondTitleLabel = UILabel()
         secondTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        secondTitleLabel.textColor = tintColor
-        secondTitleLabel.text = "Top rated movies:"
+        secondTitleLabel.textColor = Constants.tintColor
+        secondTitleLabel.text = "Top rated movies"
         secondTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         
         view.addSubview(secondTitleLabel)
         view.addSubview(popularMoviesCollectionView)
@@ -53,7 +51,7 @@ class MainViewController: UIViewController {
         popularMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         popularMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         popularMoviesCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-        popularMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.3).isActive = true
+        popularMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.4).isActive = true
         popularMoviesCollectionView.reloadData()
         
         secondTitleLabel.topAnchor.constraint(equalTo: popularMoviesCollectionView.bottomAnchor).isActive = true
@@ -62,7 +60,7 @@ class MainViewController: UIViewController {
         topRatedMoviesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topRatedMoviesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topRatedMoviesCollectionView.topAnchor.constraint(equalTo: secondTitleLabel.bottomAnchor).isActive = true
-        topRatedMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.3).isActive = true
+        topRatedMoviesCollectionView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height - self.navigationController!.navigationBar.frame.size.height - self.tabBarController!.tabBar.frame.size.height) / 2.4).isActive = true
         topRatedMoviesCollectionView.reloadData()
         
         checkLoggedIn()

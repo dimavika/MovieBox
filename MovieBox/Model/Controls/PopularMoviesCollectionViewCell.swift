@@ -56,7 +56,7 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
         movieImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         movieImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         movieImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        movieImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2/3).isActive = true
+        movieImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2/3.2).isActive = true
         
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
@@ -86,9 +86,4 @@ class PopularMoviesCollectionViewCell: UICollectionViewCell {
     }
 }
 
-struct Constants {
-    static let leftDistanceToView: CGFloat = 40
-    static let rightDistanceToView: CGFloat = 40
-    static let galleryMinimumLineSpacing: CGFloat = 10
-    static let galleryItemWidth = (UIScreen.main.bounds.width - Constants.leftDistanceToView - Constants.rightDistanceToView - (Constants.galleryMinimumLineSpacing / 2)) / 2
-}
+

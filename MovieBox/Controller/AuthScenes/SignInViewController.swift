@@ -11,10 +11,7 @@ import GoogleSignIn
 
 class SignInViewController: UIViewController {
     
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     private let googleButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
-    private let backButtonColor = UIColor(red: 40.0/255.0, green: 46.0/255.0, blue: 79.0/255.0, alpha: 1.0)
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separatorLabel: UILabel!
@@ -29,22 +26,22 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backButton.tintColor = tintColor
+        backButton.tintColor = Constants.tintColor
         
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         
         emailTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         emailTextField.clipsToBounds = true
         passwordTextField.configure(color: UIColor(.black),
                                  font: UIFont.systemFont(ofSize: 16),
                                  cornerRadius: 55/2,
-                                 borderColor: borderColor,
+                                 borderColor: Constants.borderColor,
                                  backgroundColor: UIColor(.white),
                                  borderWidth: 1.0)
         passwordTextField.clearsOnBeginEditing = false
@@ -56,8 +53,8 @@ class SignInViewController: UIViewController {
         signInButton.configure(color: UIColor(.white),
                                font: UIFont.boldSystemFont(ofSize: 20),
                                cornerRadius: 55/2,
-                               borderColor: tintColor,
-                               backgroundColor: tintColor,
+                               borderColor: Constants.tintColor,
+                               backgroundColor: Constants.tintColor,
                                borderWidth: 1.0)
         googleButton.configure(color: UIColor(.white),
                                font: UIFont.boldSystemFont(ofSize: 20),

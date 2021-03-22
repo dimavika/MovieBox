@@ -9,8 +9,6 @@ import UIKit
 import FirebaseAuth
 
 class UserRatesViewController: UIViewController {
-
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     
     let moviesDatabaseService = MovieDatabaseService.shared
     let reviewsDatabaseService = ReviewDatabaseService.shared
@@ -31,7 +29,7 @@ class UserRatesViewController: UIViewController {
 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
         self.navigationItem.backButtonTitle = "My rates"
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
@@ -73,7 +71,7 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             button.setImage(#imageLiteral(resourceName: "icons8-expand-arrow-50"), for: .normal)
         }
-        button.tintColor = tintColor
+        button.tintColor = Constants.tintColor
         button.backgroundColor = .white
         button.addTarget(self, action: #selector(handleOpenCloseSection), for: .touchUpInside)
         button.tag = section
@@ -150,8 +148,10 @@ extension UserRatesViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.imageActivityIndicator.startAnimating()
-        //MARK: TODO DEFAULT PICTURE
         cell.movieImageView.kf.setImage(with: URL(string: movie.imageUrl))
+        if cell.movieImageView.image == nil {
+            cell.movieImageView.image = UIImage(named: "def-movie-icon")
+        }
         cell.imageActivityIndicator.stopAnimating()
         return cell
     }

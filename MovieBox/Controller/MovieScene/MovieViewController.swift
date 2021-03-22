@@ -13,9 +13,6 @@ import Kingfisher
 
 class MovieViewController: UIViewController {
 
-    private let backButtonColor = UIColor(red: 40.0/255.0, green: 46.0/255.0, blue: 79.0/255.0, alpha: 1.0)
-    private let borderColor: UIColor = UIColor(red: 220.0/255.0, green: 221.0/255.0, blue: 229.0/255.0, alpha: 1.0)
-    private let tintColor = UIColor(red: 237.0/255.0, green: 101.0/255.0, blue: 106.0/255.0, alpha: 1.0)
     private let blueButtonColor = UIColor(red: 57.0/255.0, green: 77.0/255.0, blue: 141.0/255.0, alpha: 1.0)
     
     var movieImage: UIImage?
@@ -58,10 +55,10 @@ class MovieViewController: UIViewController {
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.tintColor = tintColor
+        navigationController?.navigationBar.tintColor = Constants.tintColor
         
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         yearLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
         genreLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
         countryLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
@@ -80,8 +77,8 @@ class MovieViewController: UIViewController {
         deleteMovieButton.configure(color: UIColor(.white),
                                          font: UIFont.boldSystemFont(ofSize: 15),
                                          cornerRadius: deleteMovieButton.bounds.height / 2,
-                                         borderColor: tintColor,
-                                         backgroundColor: tintColor,
+                                         borderColor: Constants.tintColor,
+                                         backgroundColor: Constants.tintColor,
                                          borderWidth: 1.0)
         watchTrailerButton.configure(color: UIColor(.white),
                                          font: UIFont.boldSystemFont(ofSize: 15),
@@ -98,14 +95,14 @@ class MovieViewController: UIViewController {
         postReviewButton.configure(color: UIColor(.white),
                                    font: UIFont.boldSystemFont(ofSize: 15),
                                    cornerRadius: postReviewButton.bounds.height / 2,
-                                   borderColor: tintColor,
-                                   backgroundColor: tintColor,
+                                   borderColor: Constants.tintColor,
+                                   backgroundColor: Constants.tintColor,
                                    borderWidth: 1.0)
         
         newReviewTextField.configure(color: UIColor(.black),
                                          font: UIFont.systemFont(ofSize: 16),
                                          cornerRadius: newReviewTextField.bounds.height / 2,
-                                         borderColor: borderColor,
+                                         borderColor: Constants.borderColor,
                                          backgroundColor: UIColor(.white),
                                          borderWidth: 1.0)
         newReviewTextField.clipsToBounds = true
@@ -139,35 +136,16 @@ class MovieViewController: UIViewController {
             movieBoxRateLabel.text = movieBoxRate
             movieBoxRateCountLabel.text = movieBoxRateCount
         } else {
-            ratingDatabaseService.getAverageRatingForMovie(movieId: movie!.id) { (result) in
-                switch result {
-                case .failure(_):
-                    self.movieBoxRateLabel.text = "-"
-                    self.movieBoxRateLabel.backgroundColor = .gray
-                case .success(let ratingInfo):
-                    if ratingInfo.rating.isEqual(to: 0.0) {
-                        self.movieBoxRateLabel.text = "-"
-                        self.movieBoxRateLabel.backgroundColor = .gray
-                        self.movieBoxRateCountLabel.text = "0"
-                    } else {
-                        if ratingInfo.rating <= 2.0 {
-                            self.movieBoxRateLabel.backgroundColor = .red
-                        } else if ratingInfo.rating < 4.0 {
-                            self.movieBoxRateLabel.backgroundColor = .gray
-                        } else {
-                            self.movieBoxRateLabel.backgroundColor = .systemGreen
-                        }
-                        self.movieBoxRateLabel.text = String(format: "%.1f", ratingInfo.rating)
-                        self.movieBoxRateCountLabel.text = "\(ratingInfo.count)"
-                    }
-                }
-            }
+            updateMovieBoxRate()
         }
         
         if movieImage != nil {
             movieImageView.image = movieImage
         } else {
             movieImageView.kf.setImage(with: URL(string: movie!.imageUrl))
+            if movieImageView.image == nil {
+                movieImageView.image = UIImage(named: "def-movie-icon")
+            }
         }
         
     }
@@ -299,25 +277,6 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//        return .delete
-//    }
-//
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            let reviewToDelete = reviews[indexPath.row]
-//            reviewsDatabaseService.deleteReview(id: reviewToDelete.id) { (result) in
-//                switch result {
-//                case .failure(let error):
-//                    AlertPresenter.presentAlertController(self, title: "Delete review", message: error.localizedDescription)
-//                case .success(_):
-//                    self.reviews.remove(at: indexPath.row)
-//                    tableView.deleteRows(at: [indexPath], with: .fade)
-//                }
-//            }
-//
-//        }
-//    }
 }
 
 extension MovieViewController {
@@ -371,10 +330,36 @@ extension MovieViewController {
         ratingView.didTouchCosmos = { rating in
             self.ratingDatabaseService.saveRating(movieId: self.movie!.id, value: Int(rating), uid: user.uid) { (result) in
                 switch result {
-                case .success(let successMessage):
-                    print(successMessage)
+                case .success(_):
+                    self.updateMovieBoxRate()
                 case .failure(let error):
                     AlertPresenter.presentAlertController(self, title: "Save rate", message: error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    private func updateMovieBoxRate() {
+        ratingDatabaseService.getAverageRatingForMovie(movieId: movie!.id) { (result) in
+            switch result {
+            case .failure(_):
+                self.movieBoxRateLabel.text = "-"
+                self.movieBoxRateLabel.backgroundColor = .gray
+            case .success(let ratingInfo):
+                if ratingInfo.rating.isEqual(to: 0.0) {
+                    self.movieBoxRateLabel.text = "-"
+                    self.movieBoxRateLabel.backgroundColor = .gray
+                    self.movieBoxRateCountLabel.text = "0"
+                } else {
+                    if ratingInfo.rating <= 2.0 {
+                        self.movieBoxRateLabel.backgroundColor = .red
+                    } else if ratingInfo.rating < 4.0 {
+                        self.movieBoxRateLabel.backgroundColor = .gray
+                    } else {
+                        self.movieBoxRateLabel.backgroundColor = .systemGreen
+                    }
+                    self.movieBoxRateLabel.text = String(format: "%.1f", ratingInfo.rating)
+                    self.movieBoxRateCountLabel.text = "\(ratingInfo.count)"
                 }
             }
         }

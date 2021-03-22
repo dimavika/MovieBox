@@ -36,21 +36,21 @@ class MoviesViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.tintColor, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 25)]
         self.tabBarController?.tabBar.shadowImage = UIImage()
         self.tabBarController?.tabBar.backgroundImage = UIImage()
         self.tabBarController?.tabBar.clipsToBounds = true
         self.navigationItem.backButtonTitle = "Movies"
         
-        addBarButtonItem.tintColor = tintColor
+        addBarButtonItem.tintColor = Constants.tintColor
         
-        titleLabel.textColor = tintColor
+        titleLabel.textColor = Constants.tintColor
         titleLabel.font = UIFont.systemFont(ofSize: 17)
         
         searchTextField.configure(color: .black,
                                   font: UIFont.systemFont(ofSize: 16),
                                   cornerRadius: searchTextField.bounds.height / 2,
-                                  borderColor: borderColor,
+                                  borderColor: Constants.borderColor,
                                   backgroundColor: .white,
                                   borderWidth: 1.0)
         searchTextField.clipsToBounds = true
@@ -161,8 +161,10 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.imageActivityIndicator.startAnimating()
-        //MARK: TODO DEFAULT PICTURE
         cell.movieImageView.kf.setImage(with: URL(string: movie.imageUrl))
+        if cell.movieImageView.image == nil {
+            cell.movieImageView.image = UIImage(named: "def-movie-icon")
+        }
         cell.imageActivityIndicator.stopAnimating()
         
         return cell
